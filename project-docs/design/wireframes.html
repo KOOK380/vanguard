@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vanguard Technology wireframes</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font:16px/1.5 Inter,Arial,Helvetica,sans-serif;color:#222;background:#fff}
+a{color:inherit}
+h1{font-size:44px;line-height:1.15;margin:0 0 16px;font-weight:700}
+h2{font-size:30px;line-height:1.2;margin:0 0 16px;font-weight:700}
+h3{font-size:18px;line-height:1.35;margin:0 0 8px;font-weight:600}
+p{margin:0 0 16px}
+ul,ol{margin:0 0 16px;padding-left:20px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 48px}
+.sec{padding:72px 0;border-top:1px solid #ddd}
+.sec.alt{background:#f3f3f3}
+.sec.dark{background:#333;color:#fff;border:0}
+.lead{font-size:18px;max-width:760px}
+.small{font-size:13px;color:#555}
+.dark .small{color:#ddd}
+.grid{display:grid;gap:24px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.g5{grid-template-columns:repeat(5,1fr)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.split.wide{grid-template-columns:7fr 5fr}
+.card{border:1px solid #bbb;border-radius:8px;padding:24px;background:#fff;color:#222}
+.card p:last-child,.card ul:last-child{margin-bottom:0}
+.bar{height:10px;background:#d4d4d4;margin:0 0 8px;border-radius:2px}
+.bar.w8{width:80%}.bar.w6{width:60%}
+.btn{display:inline-block;min-height:48px;padding:12px 24px;border-radius:4px;font-weight:600;text-decoration:none;border:2px solid #222;margin:0 12px 12px 0}
+.btn.p{background:#222;color:#fff}
+.btn.s{background:#fff;color:#222}
+.dark .btn.p{background:#fff;color:#222;border-color:#fff}
+.dark .btn.s{background:transparent;color:#fff;border-color:#fff}
+.lnk{font-weight:600}
+.chip{display:inline-block;border:1px solid #777;border-radius:2px;padding:4px 10px;margin:0 8px 8px 0;font-size:14px;background:#fff;color:#222}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#555;margin-bottom:12px}
+.logos{display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.logo{width:140px;height:56px;background:#e2e2e2;border:1px solid #bbb;display:flex;align-items:center;justify-content:center;font-size:13px}
+/* 3D markers */
+.m3d{position:relative;border:3px dashed #111;border-radius:8px;background:repeating-linear-gradient(45deg,#e4e4e4 0 10px,#f4f4f4 10px 20px);display:flex;align-items:center;justify-content:center;text-align:center;padding:16px}
+.m3d b{display:block;background:#111;color:#fff;padding:4px 10px;font-size:14px;letter-spacing:.04em;margin-bottom:6px}
+.m3d span{display:block;font-size:13px;background:#fff;padding:4px 8px;max-width:340px}
+.hero3d{min-height:440px}
+.plant{min-height:480px}
+.badge{position:absolute;left:12px;top:12px;background:#fff;border:1px solid #111;font-size:13px;padding:2px 8px}
+.dot{position:absolute;font-style:normal;width:30px;height:30px;border-radius:50%;background:#111;color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center}
+.ico{width:64px;height:64px;border:2px dashed #111;background:repeating-linear-gradient(45deg,#ddd 0 5px,#f4f4f4 5px 10px);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;margin-bottom:12px;border-radius:4px;text-align:center;line-height:1.1}
+/* header */
+.hdr{border-bottom:1px solid #bbb;background:#fff;position:sticky;top:0;z-index:5}
+.hdr .wrap{display:flex;align-items:center;gap:24px;height:72px}
+.brand{font-weight:700;margin-right:auto}
+.nav{display:flex;gap:20px}
+.nav a{text-decoration:none}
+.hdr .btn{margin:0;padding:10px 16px;min-height:44px;white-space:nowrap}
+.menu{display:none;width:44px;height:44px;border:1px solid #777;align-items:center;justify-content:center;font-size:13px}
+.ftr{background:#222;color:#eee;padding:48px 0;font-size:14px}
+.ftr h3{font-size:14px}
+.ftr ul{list-style:none;padding:0}
+.page{display:none}
+.page.on{display:block}
+.steps{counter-reset:s}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:15px;font-weight:600;margin-bottom:6px}
+.input{height:48px;border:1px solid #777;border-radius:4px;background:#fff;padding:12px;font-size:14px;color:#666}
+.input.ta{height:120px}
+.help{font-size:13px;color:#555;margin-top:4px}
+.prof .tag{font-size:13px;font-weight:600;background:#eee;border:1px solid #999;padding:4px 8px;display:block;margin-bottom:12px}
+table{border-collapse:collapse;width:100%}
+/* review toolbar */
+.tb{background:#000;color:#fff;font-size:13px;padding:8px 16px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;position:sticky;top:0;z-index:9}
+.tb button{font:inherit;background:#fff;color:#000;border:1px solid #fff;padding:4px 10px;min-height:32px;cursor:pointer}
+.tb button[aria-pressed=true]{background:#777;color:#fff}
+.tb .sep{margin-left:auto}
+.bare .tb{display:none}
+#phone{display:none;width:406px;height:860px;border:8px solid #333;margin:24px auto;background:#fff}
+body.mob #phone{display:block}
+body.mob main,body.mob .hdr,body.mob .ftr{display:none}
+@media (max-width:767px){
+ h1{font-size:32px}h2{font-size:24px}
+ .wrap{padding:0 16px}
+ .sec{padding:48px 0}
+ .g2,.g3,.g4,.g5,.split,.split.wide{grid-template-columns:1fr}
+ .nav{display:none}
+ .menu{display:flex}
+ .hdr .wrap{height:60px;gap:8px}
+ .hdr .btn{display:none}
+ .hero3d{min-height:260px}
+ .plant{min-height:320px}
+ .btn{display:block;text-align:center;margin:0 0 12px}
+ .logo{width:calc(50% - 8px)}
+ .lead{font-size:16px}
+}
+
+.sticky{display:none}
+.band{display:flex;flex-wrap:wrap;gap:12px 40px;align-items:center}
+.cols5{grid-template-columns:repeat(5,1fr)}
+.m3d>div{position:relative;z-index:1}
+.plant{align-items:flex-end}
+.dot{z-index:2}
+.chips a{text-decoration:underline}
+.row{display:flex;gap:16px;align-items:center;padding:16px;text-decoration:none}
+.row .ico{width:48px;height:48px;font-size:9px;margin:0;flex:none}
+.row h3{margin:0;font-size:16px}
+.callout{border:2px solid #222;border-radius:8px;padding:24px}
+details.card{padding:0}
+details.card summary{padding:24px;cursor:pointer;list-style-position:inside}
+details.card summary h3{display:inline;margin:0}
+details.card .in{padding:0 24px 24px}
+fieldset{border:0;border-top:1px solid #bbb;padding:24px 0 0;margin:0 0 8px}
+legend{font-weight:700;font-size:18px;padding:0 12px 0 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+.tap{display:none}
+.side{position:sticky;top:96px}
+.hdr.nocta .btn{display:none}
+@media (max-width:767px){
+ body.bare{padding-bottom:72px}
+ .sticky{display:grid;grid-template-columns:1fr 2fr;gap:8px;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid #222;padding:8px 16px;z-index:8}
+ .sticky .btn{margin:0;padding:10px 8px;font-size:15px;min-height:48px}
+ .cols5{grid-template-columns:1fr 1fr}
+ .two{grid-template-columns:1fr}
+ .tap{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+ .tap .btn{margin:0}
+ .side{position:static}
+ .chip{padding:10px 12px;margin:0 6px 6px 0}
+ .lnk{display:inline-block;padding:10px 0}
+ .sec{padding:40px 0}
+ .band{display:grid;grid-template-columns:1fr 1fr}
+ .sec p a[href^=tel],.sec p a[href^=mailto],.sec ol a{display:inline-block;padding:10px 0}
+ .trust .logo{width:calc(50% - 8px)}
+}
+.trust .logo{width:124px}
+.prof{grid-template-columns:1fr!important}
+</style>
+</head>
+<body>
+<div class="tb" role="toolbar" aria-label="Wireframe review controls">
+ <strong>Greyscale wireframes</strong>
+ <button data-p="home">Home</button><button data-p="solution">Solution</button><button data-p="solution2">Solution: Field Services</button><button data-p="industry">Industry</button><button data-p="capabilities">Capabilities</button><button data-p="contact">Contact</button>
+ <span class="sep">View:</span><button data-d="desk">Desktop</button><button data-d="mob">Mobile 390</button>
+</div>
+<iframe id="phone" title="Mobile view"></iframe>
+
+<header class="hdr"><div class="wrap">
+ <a class="brand" href="#">[Logo] Vanguard Technology</a>
+ <nav class="nav" aria-label="Main"><a href="#">About</a><a href="#">Solutions</a><a href="#">Industries</a><a href="#">Capabilities</a></nav>
+ <a href="tel:+97126268001" class="nav">+971 2 626 8001</a>
+ <a class="btn p" href="#" data-cta="header">Start a consultation</a>
+ <span class="menu">Menu</span>
+</div></header>
+
+<div class="sticky"><a class="btn s" href="tel:+97126268001">Call</a><a class="btn p" id="stickyCta" href="#" data-cta="sticky">Start a consultation</a></div>
+<main>
+<!-- HOME -->
+<div class="page" id="p-home">
+ <section class="sec" style="border:0"><div class="wrap split wide">
+  <div>
+   <div class="eyebrow">SCADA. Control. Instrumentation.</div>
+   <h1>Industrial automation and system integration for the UAE</h1>
+   <p class="lead">Vanguard Technology is an industrial automation company in Abu Dhabi, delivering SCADA and control systems for oil and gas, water, district cooling, power and infrastructure.</p>
+   <a class="btn p" href="#" data-cta="primary">Start a consultation</a><a class="btn s" href="#">Explore solutions</a>
+  </div>
+  <div class="m3d hero3d"><div><b>3D HERO</b><span>WebGL starts after the page is usable. Static image is the LCP and the fallback. Never a photo.</span></div></div>
+ </div></section>
+ <section class="sec alt" style="padding:32px 0"><div class="wrap">
+  <div class="band" style="margin-bottom:24px"><strong>Abu Dhabi based</strong><strong>End-to-end delivery</strong><strong>24/7 support</strong><strong>Free consultations</strong></div>
+  <p class="small" style="margin-bottom:8px">Our Partners</p><div class="logos"><div class="logo">ADNOC</div><div class="logo">CNPC</div><div class="logo">Khalifa University</div><div class="logo">SAPCO</div></div>
+ </div></section>
+ <section class="sec"><div class="wrap">
+  <h2>Our solutions</h2><p class="lead">We deliver complete automation systems, from SCADA and PLC programs to instrumentation, electrical work and maintenance. We use proven technologies and a practical approach. Choose a solution to see what it covers.</p>
+  <div class="grid g3"><a class="card row" href="#"><div class="ico">3D ICON</div><h3>System Integration</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>PLC/SCADA Design &amp; Validation</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Field Services &amp; Annual Maintenance Contracts</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Control &amp; Instrumentation Engineering</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Supply &amp; Field Installation</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Turnkey Projects</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Project Management</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>IT Consultancy</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Audio/Visual Integration</h3></a></div>
+  <p style="margin-top:24px"><a class="lnk" href="#">View all solutions</a></p>
+ </div></section>
+ <section class="sec alt"><div class="wrap">
+  <h2>Industries we serve</h2><p class="lead">We work in oil and gas, power, water and infrastructure. Most of our systems control water and wastewater, district cooling plants, process industry, power and infrastructure projects. Choose your sector to see what we offer.</p>
+  <div class="grid g3"><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Oil &amp; Gas</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Water &amp; Wastewater</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>District Cooling</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Power &amp; Infrastructure</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>HVAC &amp; Building Management Systems</h3></a><a class="card row" href="#"><div class="ico">3D ICON</div><h3>Safety Instrumented Systems</h3></a></div>
+  <p style="margin-top:24px"><a class="lnk" href="#">View all industries</a></p>
+ </div></section>
+ <section class="sec"><div class="wrap">
+  <h2>From field instruments to SCADA</h2><p class="lead">Select an area of this illustrative plant to see the work we offer there.</p>
+  <div class="split wide"><div class="m3d plant"><i class="badge">Illustrative model</i><i class="dot" style="left:18%;top:18%">1</i><i class="dot" style="left:44%;top:14%">2</i><i class="dot" style="left:70%;top:18%">3</i><i class="dot" style="left:82%;top:44%">4</i><i class="dot" style="left:14%;top:52%">5</i><i class="dot" style="left:48%;top:46%">6</i><div><b>3D PLANT MODEL</b><span>Loads near the viewport on capable devices. "Explore" control on touch. Page scroll always wins. Static image fallback.</span></div></div>
+  <div><ol><li><a href="#">Oil &amp; Gas</a></li><li><a href="#">Water &amp; Wastewater</a></li><li><a href="#">District Cooling</a></li><li><a href="#">Power &amp; Infrastructure</a></li><li><a href="#">HVAC &amp; Building Management Systems</a></li><li><a href="#">Safety Instrumented Systems</a></li></ol><div class="card"><p class="small">Hotspot text, 25 words</p><div class="bar"></div><div class="bar"></div><div class="bar w6"></div><a class="lnk" href="#">Open the page</a></div></div></div>
+ </div></section>
+ <section class="sec alt"><div class="wrap"><h2>How we work</h2><div class="grid cols5" style="margin-bottom:24px"><div><h3>1. Consult</h3><div class="bar"></div></div><div><h3>2. Design</h3><div class="bar"></div></div><div><h3>3. Supply</h3><div class="bar"></div></div><div><h3>4. Install</h3><div class="bar"></div></div><div><h3>5. Maintain</h3><div class="bar"></div></div></div><a class="btn p" href="#" data-cta="primary">Start a consultation</a></div></section>
+ <section class="sec"><div class="wrap">
+  <h2>Why Vanguard</h2><div class="grid cols5">
+   <div><h3>End-to-end delivery</h3><div class="bar"></div><div class="bar w8"></div></div><div><h3>Proven technologies</h3><div class="bar"></div><div class="bar w8"></div></div><div><h3>Engineers across disciplines</h3><div class="bar"></div><div class="bar w8"></div></div><div><h3>Support after installation</h3><div class="bar"></div><div class="bar w8"></div></div><div><h3>Based in Abu Dhabi</h3><div class="bar"></div><div class="bar w8"></div></div>
+  </div></div></section>
+ <section class="sec alt"><div class="wrap"><h2>Capabilities</h2><p class="lead">Our team includes controls engineers, designers, programmers and support staff. We offer system design, integration, turnkey projects and field services. Preparing a shortlist? Ask us for the company documents your prequalification process needs.</p><a class="lnk" href="#">View capabilities</a></div></section>
+ <section class="sec dark"><div class="wrap"><h2>Tell us about your system</h2><p>Start with a free consultation. Share your sector, site and scope.</p><a class="btn p" href="#" data-cta="primary">Start a consultation</a><a class="btn s" href="tel:+97126268001">Call +971 2 626 8001</a></div></section>
+</div>
+
+<!-- SOLUTION: PLC/SCADA -->
+<div class="page" id="p-solution">
+ <section class="sec" style="border:0"><div class="wrap"><div class="ico">3D ICON</div>
+  <h1>PLC and SCADA design and validation</h1><p class="lead">We design and validate PLC programs and implement SCADA, communications and control systems. We use proven technologies and a practical approach.</p>
+  <a class="btn p" href="#" data-cta="primary">Discuss your SCADA scope</a><a class="btn s" href="#">See oil and gas</a>
+  <p class="chips"><span class="small" style="display:block;margin-bottom:6px">Industries served</span><a class="chip" href="#">Oil and gas</a><a class="chip" href="#">Water and wastewater</a><a class="chip" href="#">District cooling</a><a class="chip" href="#">Power and infrastructure</a></p>
+ </div></section>
+ <section class="sec"><div class="wrap"><h2>What we deliver</h2><div class="grid g3"><div class="card">Control system design</div><div class="card">PLC program development</div><div class="card">PLC program validation</div><div class="card">SCADA implementation</div><div class="card">Communications for SCADA and control systems</div><div class="card">Retrofit services</div></div></div></section>
+ <section class="sec"><div class="wrap"><h2>From field instruments to SCADA</h2><p class="lead">Select an area of this illustrative plant to see the work we offer there.</p><div class="m3d plant"><i class="badge">Illustrative model</i><i class="dot" style="left:18%;top:18%">1</i><i class="dot" style="left:44%;top:14%">2</i><i class="dot" style="left:70%;top:18%">3</i><i class="dot" style="left:82%;top:44%">4</i><i class="dot" style="left:14%;top:52%">5</i><i class="dot" style="left:48%;top:46%">6</i><div><b>3D PLANT MODEL</b><span>Loads near the viewport on capable devices. "Explore" control on touch. Page scroll always wins. Static image fallback.</span></div></div></div></section>
+ <section class="sec alt"><div class="wrap"><h2>How we work</h2><div class="grid g3"><div><h3>1. Define the system.</h3><div class="bar"></div></div><div><h3>2. Design and program.</h3><div class="bar"></div></div><div><h3>3. Validate and implement.</h3><div class="bar"></div></div></div></div></section>
+ <section class="sec"><div class="wrap"><h2>FAQs</h2><h3>Which PLC and SCADA platforms do you work with?</h3><p>Tell us which platform your site runs on. We will confirm how we can support it.</p><h3>Can you work with an existing SCADA system?</h3><div class="bar w8"></div><h3 style="margin-top:16px">Which standards apply to my project?</h3><div class="bar w8"></div></div></section>
+ <section class="sec alt trust"><div class="wrap split"><div><p class="small" style="margin-bottom:8px">Our Partners</p><div class="logos"><div class="logo">ADNOC</div><div class="logo">CNPC</div><div class="logo">Khalifa University</div><div class="logo">SAPCO</div></div></div><div><h3>Based in Abu Dhabi</h3><p>We are based in Abu Dhabi and serve the UAE, including Dubai.</p><p><a href="tel:+97126268001">+971 2 626 8001</a><br><a href="mailto:info@vanguardgcc.com">info@vanguardgcc.com</a></p></div></div></section>
+ <section class="sec dark"><div class="wrap"><h2>Tell us which platform your site runs on</h2><p>We will confirm how we can support it.</p><a class="btn p" href="#" data-cta="primary">Discuss your SCADA scope</a><a class="btn s" href="#">Request company documents</a></div></section>
+</div>
+
+<!-- SOLUTION: FIELD SERVICES VARIANT -->
+<div class="page" id="p-solution2">
+ <section class="sec" style="border:0"><div class="wrap"><div class="ico">3D ICON</div>
+  <h1>Field services and annual maintenance contracts</h1><p class="lead">We offer annual maintenance contracts and field services for automation and control systems. Our support includes maintenance services, retrofit work, remote support and technical expertise.</p>
+  <a class="btn p" href="#" data-cta="primary">Ask about a maintenance contract</a><a class="btn s" href="tel:+97126268001">Call us</a>
+  <p class="chips"><span class="small" style="display:block;margin-bottom:6px">Industries served</span><a class="chip" href="#">District cooling</a><a class="chip" href="#">Oil and gas</a><a class="chip" href="#">Water and wastewater</a><a class="chip" href="#">Power and infrastructure</a></p>
+ </div></section>
+ <section class="sec"><div class="wrap split wide"><div><h2>What we deliver</h2><div class="grid g2"><div class="card">Annual maintenance contracts</div><div class="card">Maintenance services</div><div class="card">Retrofit work</div><div class="card">Remote support</div><div class="card">Technical resources and expertise</div><div class="card">24/7 support</div></div></div>
+ <div class="callout"><h3>What do you need to quote for a maintenance contract?</h3><p>Send us the site location, control system in use, your current support arrangement and the support you need.</p><a class="btn p" href="#" data-cta="primary">Ask about a maintenance contract</a></div></div></section>
+ <section class="sec alt"><div class="wrap"><h2>How we work</h2><div class="grid g3"><div><h3>1. Tell us about your plant.</h3><div class="bar"></div></div><div><h3>2. Agree the contract.</h3><div class="bar"></div></div><div><h3>3. Provide support.</h3><div class="bar"></div></div></div></div></section>
+ <section class="sec"><div class="wrap"><h2>FAQs</h2><h3>Do you maintain district cooling plant controls?</h3><div class="bar"></div><h3 style="margin-top:16px">What does 24/7 support cover?</h3><div class="bar"></div></div></section>
+ <section class="sec alt trust"><div class="wrap split"><div><p class="small" style="margin-bottom:8px">Our Partners</p><div class="logos"><div class="logo">ADNOC</div><div class="logo">CNPC</div><div class="logo">Khalifa University</div><div class="logo">SAPCO</div></div></div><div><h3>Based in Abu Dhabi</h3><p>We are based in Abu Dhabi and serve the UAE, including Dubai.</p><p><a href="tel:+97126268001">+971 2 626 8001</a><br><a href="mailto:info@vanguardgcc.com">info@vanguardgcc.com</a></p></div></div></section>
+ <section class="sec dark"><div class="wrap"><h2>Tell us about your plant</h2><p>Share the site, the control system in use and your current support arrangement.</p><a class="btn p" href="#" data-cta="primary">Ask about a maintenance contract</a><a class="btn s" href="tel:+97126268001">Call us</a></div></section>
+</div>
+
+<!-- INDUSTRY: DISTRICT COOLING -->
+<div class="page" id="p-industry">
+ <section class="sec" style="border:0"><div class="wrap"><div class="ico">3D ICON</div><h1>Automation and control for district cooling plants</h1><p class="lead">Control systems and SCADA for plants, with retrofit and annual maintenance contracts.</p>
+  <a class="btn p" href="#" data-cta="primary">Discuss your plant</a><a class="btn s" href="#">See field services and maintenance</a></div></section>
+ <section class="sec"><div class="wrap"><h2>Operator challenges</h2><div class="grid g4"><div class="card"><h3>Low delta-T</h3><div class="bar"></div><div class="bar w8"></div></div><div class="card"><h3>Chiller demand</h3><div class="bar"></div><div class="bar w8"></div></div><div class="card"><h3>Controls in customer buildings</h3><div class="bar"></div><div class="bar w8"></div></div><div class="card"><h3>Ageing plant controls</h3><div class="bar"></div><div class="bar w8"></div></div></div></div></section>
+ <section class="sec alt"><div class="wrap"><h2>How Vanguard helps</h2><div class="grid g2"><div class="card"><h3>Maintain and retrofit</h3><div class="bar"></div><a class="lnk" href="#">Field Services &amp; Annual Maintenance Contracts</a></div><div class="card"><h3>Engineer the controls</h3><div class="bar"></div><a class="lnk" href="#">Control &amp; Instrumentation Engineering</a></div><div class="card"><h3>Design and validate</h3><div class="bar"></div><a class="lnk" href="#">PLC/SCADA Design &amp; Validation</a></div><div class="card"><h3>Supply and install</h3><div class="bar"></div><a class="lnk" href="#">Supply &amp; Field Installation</a></div></div></div></section>
+ <section class="sec"><div class="wrap"><h2>See it on the model</h2><p class="lead">Chilled water return temperature affects pumping and chiller operation. Our control and SCADA systems serve district cooling plants, with retrofit, maintenance and field services support.</p><div class="split wide"><div><div class="m3d plant"><i class="badge">Illustrative model</i><i class="dot" style="left:18%;top:18%">1</i><i class="dot" style="left:44%;top:14%">2</i><i class="dot" style="left:70%;top:18%;outline:4px solid #000;outline-offset:3px">3</i><i class="dot" style="left:82%;top:44%">4</i><i class="dot" style="left:14%;top:52%">5</i><i class="dot" style="left:48%;top:46%">6</i><div><b>3D PLANT MODEL</b><span>Opens focused on hotspot 3. "Explore" control on touch. Page scroll always wins. Static image fallback.</span></div></div></div><div><h3>Typical systems we deliver</h3><ul><li>SCADA, communications and control systems</li><li>Control and process automation</li><li>PLC programs</li><li>Automation instrumentation</li><li>Retrofit, maintenance and field services</li></ul></div></div></div></section>
+ <section class="sec dark"><div class="wrap"><h2>Discuss your plant</h2><p>Tell us about your plant and the control system in use.</p><a class="btn p" href="#" data-cta="primary">Discuss your plant</a><a class="btn s" href="#">See field services and maintenance</a></div></section>
+</div>
+
+<!-- CAPABILITIES -->
+<div class="page" id="p-capabilities">
+ <section class="sec" style="border:0"><div class="wrap"><h1>Capabilities and company details</h1><p class="lead">Vanguard Technology is an industrial automation company in Abu Dhabi. This page sets out what we do, the types of work we deliver and how to reach us.</p><a class="btn p" href="#" data-cta="primary">Request company documents</a><a class="btn s" href="#">Start a consultation</a></div></section>
+ <section class="sec alt"><div class="wrap"><h2>What we do</h2><div class="grid cols5"><div><h3>Engineering disciplines</h3><div class="bar"></div></div><div><h3>Systems</h3><div class="bar"></div><div class="bar"></div></div><div><h3>Services</h3><div class="bar"></div><div class="bar"></div></div><div><h3>Sectors</h3><div class="bar"></div></div><div><h3>Our team</h3><div class="bar"></div></div></div></div></section>
+ <section class="sec"><div class="wrap"><h2>Our Partners</h2><div class="logos"><div class="logo">ADNOC</div><div class="logo">CNPC</div><div class="logo">Khalifa University</div><div class="logo">SAPCO</div></div></div></section>
+ <section class="sec alt"><div class="wrap split"><div><h2>Company details</h2><p>Vanguard Technology<br>403, Cuba Cafe Building, PO Box 36864, Tourist Club Area, Al Zahiya Zone, Abu Dhabi, UAE<br><a href="tel:+97126268001">+971 2 626 8001</a> | <a href="mailto:info@vanguardgcc.com">info@vanguardgcc.com</a></p><a class="lnk" href="#">See names and titles on our About page</a></div>
+ <div class="callout" style="background:#fff"><h2>Preparing a shortlist?</h2><p>Ask us for the company documents your prequalification process needs.</p><a class="btn p" href="#" data-cta="primary">Request company documents</a></div></div></section>
+ <section class="sec"><div class="wrap"><h2>The types of work we deliver</h2><p class="lead">These profiles show the types of work we deliver. They are not records of completed projects, and they name no client or site. We agree the actual scope with you for each project.</p>
+  <div class="grid prof"><details class="card" open><summary><span class="tag">Typical project profile. This describes a type of work we deliver. It is not a completed project.</span><h3>SCADA and control system retrofit for a water or wastewater site</h3></summary><div class="in"><p class="small">Scope, Systems involved, Typical deliverables, The outcome you can expect</p><div class="bar"></div><div class="bar"></div><div class="bar w8"></div><div class="bar"></div><div class="bar w6"></div><p class="small">Results depend on your site and the agreed scope.</p></div></details><details class="card"><summary><span class="tag">Typical project profile. This describes a type of work we deliver. It is not a completed project.</span><h3>PLC and control system delivery for a district cooling plant</h3></summary><div class="in"><p class="small">Scope, Systems involved, Typical deliverables, The outcome you can expect</p><div class="bar"></div><div class="bar"></div><div class="bar w8"></div><div class="bar"></div><div class="bar w6"></div><p class="small">Results depend on your site and the agreed scope.</p></div></details><details class="card"><summary><span class="tag">Typical project profile. This describes a type of work we deliver. It is not a completed project.</span><h3>Annual maintenance contract for BMS and HVAC controls</h3></summary><div class="in"><p class="small">Scope, Systems involved, Typical deliverables, The outcome you can expect</p><div class="bar"></div><div class="bar"></div><div class="bar w8"></div><div class="bar"></div><div class="bar w6"></div><p class="small">Results depend on your site and the agreed scope.</p></div></details><details class="card"><summary><span class="tag">Typical project profile. This describes a type of work we deliver. It is not a completed project.</span><h3>Instrumentation and field installation package for an oil and gas facility</h3></summary><div class="in"><p class="small">Scope, Systems involved, Typical deliverables, The outcome you can expect</p><div class="bar"></div><div class="bar"></div><div class="bar w8"></div><div class="bar"></div><div class="bar w6"></div><p class="small">Results depend on your site and the agreed scope.</p></div></details><details class="card"><summary><span class="tag">Typical project profile. This describes a type of work we deliver. It is not a completed project.</span><h3>Turnkey electrical and control package for an infrastructure project</h3></summary><div class="in"><p class="small">Scope, Systems involved, Typical deliverables, The outcome you can expect</p><div class="bar"></div><div class="bar"></div><div class="bar w8"></div><div class="bar"></div><div class="bar w6"></div><p class="small">Results depend on your site and the agreed scope.</p></div></details><details class="card"><summary><span class="tag">Typical project profile. This describes a type of work we deliver. It is not a completed project.</span><h3>Control system retrofit for a power facility</h3></summary><div class="in"><p class="small">Scope, Systems involved, Typical deliverables, The outcome you can expect</p><div class="bar"></div><div class="bar"></div><div class="bar w8"></div><div class="bar"></div><div class="bar w6"></div><p class="small">Results depend on your site and the agreed scope.</p></div></details></div></div></section>
+ <section class="sec dark"><div class="wrap"><h2>Tell us about your system</h2><p>Start with a free consultation, or ask for the company documents your prequalification process needs.</p><a class="btn p" href="#" data-cta="primary">Request company documents</a><a class="btn s" href="#">Start a consultation</a></div></section>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="p-contact">
+ <section class="sec" style="border:0;padding-bottom:24px"><div class="wrap"><h1>Start a consultation</h1><p class="lead">Tell us about your site, system and scope. Consultations are free. Use the form, or call or email us directly.</p></div></section>
+ <section class="sec" style="padding-top:24px;border:0"><div class="wrap split wide">
+  <form onsubmit="return false"><h2>Send your enquiry</h2><p class="small">All fields are required unless marked optional.</p>
+   <fieldset><legend>Your request</legend><div class="field"><label>What do you need?</label><div class="input">Select</div><div class="help">Selected from the page you visited. You can change it.</div></div><div class="field"><label>What is your scope?</label><div class="input ta"></div></div></fieldset>
+   <fieldset><legend>About your site</legend><div class="two"><div class="field"><label>Sector</label><div class="input">Select</div></div><div class="field"><label>System type</label><div class="input">Select</div></div><div class="field"><label>Site or project location</label><div class="input"></div></div><div class="field"><label>Project stage</label><div class="input">Select</div></div></div></fieldset>
+   <fieldset><legend>About you</legend><div class="two"><div class="field"><label>Your name</label><div class="input"></div></div><div class="field"><label>Organisation</label><div class="input"></div></div><div class="field"><label>Email address</label><div class="input"></div></div><div class="field"><label>Phone number (optional)</label><div class="input"></div></div></div><div class="field"><label>Anything else we should know? (optional)</label><div class="input ta"></div></div></fieldset>
+   <p class="small">We use these details to respond to your enquiry. See our Privacy Policy.</p>
+   <a class="btn p" href="#" data-cta="primary">Send enquiry</a>
+  </form>
+  <div class="side"><h2>Contact details</h2><p><a href="tel:+97126268001">+971 2 626 8001</a><br><a href="mailto:info@vanguardgcc.com">info@vanguardgcc.com</a><br>403, Cuba Cafe Building, PO Box 36864, Tourist Club Area, Al Zahiya Zone, Abu Dhabi, UAE</p><a class="btn s nav-call" href="tel:+97126268001">Call us</a>
+  <h2 style="margin-top:24px">What happens after your enquiry</h2><ol><li><strong>We review your details.</strong> <div class="bar"></div></li><li><strong>We contact you.</strong> <div class="bar"></div></li><li><strong>We agree the next step.</strong> <div class="bar"></div></li></ol></div>
+ </div></section>
+</div>
+</main>
+
+<footer class="ftr"><div class="wrap grid g4">
+ <div><h3>Contact</h3>+971 2 626 8001<br>info@vanguardgcc.com<br>403, Cuba Cafe Building, Abu Dhabi, UAE</div>
+ <div><h3>Company</h3><ul><li>About</li><li>Capabilities</li><li>Our Group</li><li>Careers</li><li>Contact</li></ul></div>
+ <div><h3>Legal</h3><ul><li>Privacy Policy</li><li>Terms of Use</li><li>Cookie settings</li></ul></div>
+ <div><h3>Newsletter</h3><div class="input">Email address</div><p style="margin-top:8px">[ ] Consent box, not ticked</p><span class="chip">Subscribe</span></div>
+</div></footer>
+
+<script>
+(function(){
+ var q=new URLSearchParams(location.search),bare=q.get('bare')==='1',cur=q.get('p')||'home';
+ if(bare)document.body.classList.add('bare');
+ var sticky={home:'Start a consultation',solution:'Discuss your SCADA scope',solution2:'Ask about a maintenance contract',industry:'Discuss your plant',capabilities:'Request company documents',contact:'Email us'};
+ function show(p){cur=p;var sc=document.getElementById('stickyCta');sc.textContent=sticky[p];sc.href=p==='contact'?'mailto:info@vanguardgcc.com':'#';sc.className='btn '+(p==='contact'?'s':'p');document.querySelector('.hdr').classList.toggle('nocta',p==='contact');document.querySelectorAll('.page').forEach(function(e){e.classList.toggle('on',e.id==='p-'+p)});
+  document.querySelectorAll('[data-p]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.p===p)});
+  document.getElementById('phone').src=document.body.classList.contains('mob')?location.pathname+'?bare=1&p='+p:'about:blank';window.scrollTo(0,0)}
+ function dev(d){document.body.classList.toggle('mob',d==='mob');document.querySelectorAll('[data-d]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.d===d)});show(cur)}
+ document.querySelectorAll('[data-p]').forEach(function(b){b.onclick=function(){show(b.dataset.p)}});
+ document.querySelectorAll('[data-d]').forEach(function(b){b.onclick=function(){dev(b.dataset.d)}});
+ document.querySelectorAll('a[href="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault()})});
+ dev('desk');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!doctype html><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+<canvas id="c"></canvas>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+
+// Geometry detail. Models for the site use the low setting.
+const Q = { cyl: 40, sph: [40, 24], tor: [12, 48], tubeR: 14, tubeL: 40, rb: 2, low: false };
+const LOW = { cyl: 14, sph: [14, 8], tor: [5, 16], tubeR: 6, tubeL: 14, rb: 1, low: true };
+
+const col = { ground:'#F0EBE5', light:'#CFC8BF', mid:'#B4ABA1', dark:'#8F857E', pipe:'#571926', gold:'#E19950', screen:'#3B181E', paper:'#FBF9F6', dim:'#E4DED7' };
+const M = {}; for (const k in col) { M[k] = new THREE.MeshStandardMaterial({ color: col[k], roughness: .92, metalness: 0 }); M[k].name = 'vt-' + k; }
+
+const G = () => new THREE.Group();
+function add(g, m) { g.add(m); return m; }
+function mesh(geo, mat) { const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true; return m; }
+function box(g, w, h, d, x, y, z, mat = M.light, r = .03) { const plain = !r || (Q.low && Math.min(w, h, d) < .1);
+  const m = mesh(plain ? new THREE.BoxGeometry(w, h, d) : new RoundedBoxGeometry(w, h, d, Q.rb, Math.min(r, Math.min(w, h, d) * .45)), mat); m.position.set(x, y, z); g.add(m); return m; }
+function cyl(g, r, h, x, y, z, mat = M.light, axis = 'y', seg = 40, r2) { const m = mesh(new THREE.CylinderGeometry(r2 ?? r, r, h, Math.min(seg, Q.cyl)), mat); m.position.set(x, y, z); if (axis === 'x') m.rotation.z = Math.PI / 2; if (axis === 'z') m.rotation.x = Math.PI / 2; g.add(m); return m; }
+function sph(g, r, x, y, z, mat = M.light, sy = 1) { const m = mesh(new THREE.SphereGeometry(r, Q.sph[0], Q.sph[1]), mat); m.position.set(x, y, z); m.scale.y = sy; g.add(m); return m; }
+function tor(g, R, r, x, y, z, mat = M.dark, rx = Math.PI / 2, ry = 0) { const m = mesh(new THREE.TorusGeometry(R, r, Q.tor[0], Q.tor[1]), mat); m.position.set(x, y, z); m.rotation.x = rx; m.rotation.y = ry; g.add(m); return m; }
+
+function pipe(g, pts, r = .09, mat = M.pipe, bend = .35) {
+  const V = pts.map(p => new THREE.Vector3(...p)), path = new THREE.CurvePath();
+  let last = V[0];
+  for (let i = 1; i < V.length; i++) {
+    if (i < V.length - 1) {
+      const a = V[i].clone().sub(last), b = V[i + 1].clone().sub(V[i]);
+      const c1 = V[i].clone().sub(a.clone().normalize().multiplyScalar(Math.min(bend, a.length() * .45)));
+      const c2 = V[i].clone().add(b.clone().normalize().multiplyScalar(Math.min(bend, b.length() * .45)));
+      path.add(new THREE.LineCurve3(last, c1)); path.add(new THREE.QuadraticBezierCurve3(c1, V[i], c2)); last = c2;
+    } else path.add(new THREE.LineCurve3(last, V[i]));
+  }
+  const m = mesh(new THREE.TubeGeometry(path, Math.max(Q.low ? 12 : 64, pts.length * Q.tubeL), r, Q.tubeR, false), mat); g.add(m);
+  return m;
+}
+function flange(g, x, y, z, r = .15, axis = 'x') { return cyl(g, r, .05, x, y, z, M.dark, axis, 24); }
+
+function vessel(g, x, z, h, r, base = 0, opt = {}) {
+  const y = base + h / 2 + .5;
+  cyl(g, r, h, x, y, z, M.light); sph(g, r, x, y + h / 2, z, M.light, .55); sph(g, r, x, y - h / 2, z, M.light, .55);
+  cyl(g, r * .86, .7, x, base + .3, z, M.mid);
+  const bands = opt.bands ?? 3; for (let i = 1; i <= bands; i++) tor(g, r + .005, .025, x, y - h / 2 + h * i / (bands + 1), z, M.mid);
+  if (opt.ladder !== false) {
+    const lx = x + r * .72, lz = z + r * .72 + .06;
+    cyl(g, .018, h + .4, lx - .1, y, lz, M.dark, 'y', 8); cyl(g, .018, h + .4, lx + .1, y, lz, M.dark, 'y', 8);
+    for (let yy = base + .7; yy < y + h / 2; yy += .28) cyl(g, .014, .2, lx, yy, lz, M.dark, 'x', 8);
+    tor(g, r + .34, .018, x, y + h * .32, z, M.dark); cyl(g, r + .34, .035, x, y + h * .32 - .25, z, M.mid);
+  }
+  return y;
+}
+function hTank(g, x, z, l, r, base = 0) {
+  const y = base + r + .32;
+  cyl(g, r, l, x, y, z, M.light, 'x'); for (const s of [-1, 1]) { const c = sph(g, r, x + s * l / 2, y, z, M.light); c.scale.x = .5; }
+  for (const s of [-.3, .3]) { box(g, .28, r + .32, r * 1.5, x + s * l, base + (r + .32) / 2, z, M.mid); }
+  for (const s of [-.45, 0, .45]) tor(g, r + .005, .02, x + s * l, y, z, M.mid, 0, Math.PI / 2);
+  return y;
+}
+function pump(g, x, z, base = 0, dir = 1) {
+  box(g, 1.25, .12, .55, x, base + .06, z, M.dark);
+  cyl(g, .19, .62, x - .22 * dir, base + .34, z, M.mid, 'x', 28);
+  for (let i = 0; i < 6; i++) cyl(g, .205, .018, x - .47 * dir + i * .09 * dir, base + .34, z, M.dark, 'x', 28);
+  cyl(g, .24, .2, x + .28 * dir, base + .34, z, M.light, 'x', 28);
+}
+function valve(g, x, y, z, axis = 'x') {
+  const a = axis === 'x';
+  sph(g, .17, x, y, z, M.mid);
+  for (const s of [-.21, .21]) cyl(g, .15, .05, x + (a ? s : 0), y, z + (a ? 0 : s), M.dark, axis, 20);
+  cyl(g, .025, .34, x, y + .28, z, M.dark, 'y', 10); tor(g, .12, .02, x, y + .46, z, M.pipe);
+}
+function instrument(g, x, z, base = 0, active = false, h = 1.05) {
+  box(g, .2, .05, .2, x, base + .03, z, M.dark);
+  cyl(g, .028, h, x, base + h / 2, z, M.dark, 'y', 10);
+  box(g, .26, .26, .15, x, base + h, z, M.mid, .03);
+  cyl(g, .095, .03, x, base + h, z + .085, active ? M.gold : M.paper, 'z', 24);
+}
+function cabinet(g, x, z, n = 2, base = 0) {
+  const w = .95, h = 2.15, d = .62;
+  for (let i = 0; i < n; i++) {
+    const cx = x + i * (w + .03);
+    box(g, w, h, d, cx, base + h / 2 + .1, z, M.light, .03);
+    box(g, w + .02, .1, d + .02, cx, base + .05, z, M.dark, .01);
+    box(g, w - .14, h - .16, .03, cx, base + h / 2 + .1, z + d / 2, M.dim, .01);
+    for (let r = 0; r < 5; r++) {
+      const yy = base + .55 + r * .36;
+      box(g, w - .24, .02, .03, cx, yy - .13, z + d / 2 + .02, M.dark, 0);
+      for (let c = 0; c < 6; c++) {
+        const act = (r === 3 && c === (i ? 1 : 3)) || (r === 1 && c === (i ? 4 : 0));
+        box(g, .1, .22, .05, cx - .3 + c * .12, yy, z + d / 2 + .035, act ? M.gold : (c % 3 === 0 ? M.mid : M.light), .008);
+      }
+    }
+  }
+}
+function consoleDesk(g, x, z, base = 0) {
+  box(g, 3.3, .1, 1, x, base + .78, z, M.light, .03);
+  for (const s of [-1.5, 0, 1.5]) box(g, .1, .74, .86, x + s, base + .38, z, M.mid, .02);
+  box(g, 3.3, .6, .06, x, base + .45, z - .42, M.mid, .01);
+  [-1.08, 0, 1.08].forEach((s, i) => {
+    const m = G(); m.position.set(x + s, base + 1.27, z - .22); m.rotation.y = -s * .24; g.add(m);
+    box(m, .98, .64, .05, 0, 0, 0, M.dark, .02);
+    box(m, .92, .58, .012, 0, 0, .028, M.screen, 0);
+    if (i === 1) { for (let c = 0; c < 4; c++) box(m, .16, .24, .006, -.3 + c * .2, .08, .037, c === 1 ? M.gold : M.mid, 0); box(m, .78, .025, .006, 0, -.14, .037, M.paper, 0); }
+    if (i === 0) { const L = [[-.36, -.14], [-.2, .06], [-.04, -.04], [.14, .16], [.34, .04]]; for (let k = 0; k < 4; k++) { const [a, b] = L[k], [c, d] = L[k + 1], len = Math.hypot(c - a, d - b); const b2 = box(m, len, .018, .006, (a + c) / 2, (b + d) / 2, .037, M.gold, 0); b2.rotation.z = Math.atan2(d - b, c - a); } }
+    if (i === 2) { for (let r = 0; r < 4; r++) box(m, .32 + (r % 2) * .34, .035, .006, -.2 + (r % 2) * .17, .17 - r * .11, .037, r === 2 ? M.gold : M.mid, 0); }
+    cyl(g, .035, .22, x + s, base + .9, z - .22, M.dark, 'y', 10);
+  });
+  box(g, .55, .04, .22, x, base + .85, z + .2, M.dim, .012);
+}
+function rack(g, x0, x1, z, h = 2.2, step = 2, base = 0) {
+  for (let x = x0; x <= x1 + .01; x += step) {
+    for (const s of [-.45, .45]) box(g, .1, h, .1, x, base + h / 2, z + s, M.mid, .01);
+    box(g, .12, .1, 1.05, x, base + h, z, M.mid, .01);
+    box(g, .08, .08, 1.0, x, base + h * .58, z, M.mid, .01);
+  }
+  for (const s of [-.45, .45]) box(g, x1 - x0 + .1, .08, .08, (x0 + x1) / 2, base + h - .04, z + s, M.dark, .01);
+}
+function plinth(g, w, d, h = .32) {
+  box(g, w, h, d, 0, -h / 2, 0, M.ground, .1);
+  box(g, w + .3, .08, d + .3, 0, -h - .04, 0, M.dim, .03);
+  const top = mesh(new THREE.PlaneGeometry(w - .25, d - .25), M.ground); top.rotation.x = -Math.PI / 2; top.position.y = .002; top.castShadow = false; g.add(top);
+}
+function tray(g, x0, z0, x1, z1, y = 0.06, w = .3) {
+  const dx = x1 - x0, dz = z1 - z0, l = Math.hypot(dx, dz);
+  const b = box(g, l, .05, w, (x0 + x1) / 2, y, (z0 + z1) / 2, M.mid, .008); b.rotation.y = -Math.atan2(dz, dx);
+}
+
+/* ---------- hero: field instruments, through PLC, to SCADA ---------- */
+function heroScene() {
+  const g = G(); plinth(g, 14.6, 9.4);
+  // process side
+  const yA = vessel(g, -5.8, -2.6, 2.9, .72);
+  const yB = vessel(g, -3.7, -3.0, 2.1, .58, 0, { bands: 2 });
+  const yT = hTank(g, -4.7, .15, 2.7, .55);
+  rack(g, -2.6, 2.4, -2.5, 2.25, 2.5);
+  // main process lines on the rack
+  pipe(g, [[-5.08, 1.6, -2.6], [-3.2, 1.6, -2.6], [-3.2, 2.34, -2.32], [3.0, 2.34, -2.32], [3.4, 2.34, -2.32], [3.4, .5, -2.32], [3.4, .34, -1.2], [2.8, .34, -1.2]], .085);
+  pipe(g, [[-3.7, 2.82, -3], [-3.7, 3.25, -3], [-2.75, 3.25, -2.72], [-2.75, 2.34, -2.72], [3.8, 2.34, -2.72], [4.3, 2.34, -2.72], [4.3, .4, -2.72]], .07);
+  vessel(g, -1.15, -3.55, 1.25, .5, 0, { bands: 1, ladder: false }); pipe(g, [[-1.15, 2.3, -3.55], [-1.15, 2.34, -2.9]], .06, M.pipe, .15);
+  hTank(g, 1.35, -3.6, 1.9, .42); pipe(g, [[1.35, 1.17, -3.6], [1.35, 2.34, -3.2], [1.35, 2.34, -2.72]], .05, M.pipe, .2);
+  for (const x of [-2.1, -.8, 1.9]) { valve(g, x, 2.34, -2.72); }
+  tray(g, -6.6, 2.75, -2.9, 2.75, .06, .3); pump(g, -5.6, 2.1); pump(g, -3.6, 2.1); pipe(g, [[-5.05, .34, 2.1], [-4.4, .34, 2.1], [-4.4, .34, .9]], .06); pipe(g, [[-3.05, .34, 2.1], [-2.9, .34, 2.1], [-2.9, .34, 1.1], [-2.9, .87, .35]], .06);
+  pipe(g, [[-5.8, .95, -1.88], [-5.8, .86, -.4], [-5.4, .87, .15]], .085);
+  pipe(g, [[-3.33, .87, .15], [-2.3, .87, .15], [-1.9, .36, .15], [-.9, .36, .15]], .085);
+  pipe(g, [[.25, .34, .15], [1.0, .34, .15], [1.0, .34, -1.2], [1.05, 1.25, -1.2], [1.05, 2.34, -2.05], [1.05, 2.34, -2.32]], .085);
+  flange(g, -2.3, .87, .15); flange(g, -3.0, .87, .15);
+  valve(g, -2.65, .87, .15); valve(g, .62, .34, .15); valve(g, 0, 2.34, -2.32);
+  pump(g, -.35, .15); pump(g, 2.2, -1.2, 0, -1);
+  // field instruments
+  instrument(g, -2.65, 1.3, 0, true); instrument(g, -1.5, 1.25); instrument(g, -.35, 1.3, 0, true); instrument(g, .85, 1.25);
+  instrument(g, -6.2, -.5, 0); instrument(g, 3.6, -.3, 0, true, 1.2);
+  // signal paths along trays to PLC
+  tray(g, -2.65, 1.92, 3.6, 1.92);
+  for (const x of [-2.65, -1.5, -.35, .85]) pipe(g, [[x, .05, 1.34], [x, .07, 1.92]], .022, M.pipe, .08);
+  pipe(g, [[-2.65, .1, 1.92], [3.3, .1, 1.92], [3.7, .1, 1.92], [3.72, .1, .2], [3.72, .1, -.62]], .032, M.pipe, .2);
+  pipe(g, [[-1.5, .13, 1.98], [3.4, .13, 1.98], [3.84, .13, 1.98], [3.86, .13, .2], [3.86, .13, -.62]], .032, M.pipe, .2);
+  // PLC cabinets
+  cabinet(g, 3.75, -1.15, 3);
+  // PLC to SCADA
+  pipe(g, [[5.15, .07, -.8], [5.15, .07, 1.3], [4.9, .07, 1.6], [4.9, .07, 2.45]], .036, M.pipe, .25);
+  // SCADA desk
+  consoleDesk(g, 4.65, 3.1);
+  const chair = G(); chair.position.set(4.65, 0, 4.15); g.add(chair);
+  cyl(chair, .26, .04, 0, .05, 0, M.dark, 'y', 20); cyl(chair, .03, .42, 0, .26, 0, M.dark, 'y', 10); box(chair, .5, .08, .5, 0, .5, 0, M.mid, .03); box(chair, .5, .6, .07, 0, .84, .24, M.mid, .03);
+  return g;
+}
+
+/* ---------- plant model: six generic areas ---------- */
+function plantScene() {
+  const g = G(); plinth(g, 34, 24, .42);
+  // 1 process columns
+  vessel(g, -13.2, -8.6, 7, 1.0, 0, { bands: 5 }); vessel(g, -10.7, -8.9, 5.2, .82, 0, { bands: 4 }); vessel(g, -8.5, -8.6, 3.6, .7);
+  hTank(g, -11.7, -5.1, 4.2, .72); rack(g, -13.6, -2.6, -3, 2.4, 2.2);
+  pipe(g, [[-12.7, 2.4, -8.6], [-12.7, 2.5, -3.2], [-2.6, 2.5, -3.2]], .1); pipe(g, [[-10.2, 3, -8.5], [-10.2, 2.5, -2.8], [-2.6, 2.5, -2.8]], .09);
+  // 2 water treatment
+  for (const [x, z] of [[-11.8, 3.2], [-6.9, 3.2]]) { cyl(g, 2.2, .85, x, .43, z, M.light, 'y', 72); cyl(g, 2.02, .03, x, .86, z, M.dark, 'y', 72); cyl(g, .28, 1.2, x, .6, z, M.mid); box(g, 2.5, .08, .28, x + 1.15, 1.2, z, M.mid, .01); tor(g, 2.22, .03, x, .9, z, M.mid); }
+  for (let i = 0; i < 4; i++) { box(g, 2, .62, 3.3, -13 + i * 2.15, .31, 8.4, M.light, .03); box(g, 1.72, .03, 3, -13 + i * 2.15, .63, 8.4, M.dark, .005); }
+  pipe(g, [[-9.6, .4, 3.2], [-9.1, .4, 3.2]], .1); pipe(g, [[-4.7, .4, 3.2], [-3.2, .4, 3.2], [-3.2, .4, 5.8], [-5.5, .4, 5.8]], .1); pipe(g, [[-3.2, .4, 3.2], [-2.5, .4, -2.4], [-2.5, 2.5, -3.2]], .1);
+  // 3 district cooling: chiller hall and towers
+  box(g, 8.4, 3.2, 4.8, 8.4, 1.6, -8.6, M.light, .06);
+  for (let i = 0; i < 7; i++) box(g, .7, 1.4, .05, 5.3 + i * 1.03, 1.7, -6.18, M.dark, .01);
+  for (let i = 0; i < 4; i++) { const x = 5.2 + i * 2.15; box(g, 1.95, 1.3, 1.95, x, 3.85, -8.6, M.mid, .03); cyl(g, .8, .24, x, 4.62, -8.6, M.light, 'y', 40); cyl(g, .68, .02, x, 4.75, -8.6, M.dark, 'y', 40); box(g, 1.25, .03, .07, x, 4.78, -8.6, M.light, 0); box(g, .07, .03, 1.25, x, 4.78, -8.6, M.light, 0); }
+  pipe(g, [[4.2, 1.1, -7.2], [1.2, 1.1, -7.2], [1.2, 2.5, -3.2], [-2.6, 2.5, -3.2]], .13); pipe(g, [[4.2, .6, -8], [.7, .6, -8], [.7, 2.2, -3.8]], .1);
+  for (let i = 0; i < 3; i++) pump(g, 2.0 + i * 0, -5.0 + i * .9, 0, -1);
+  // 4 electrical building, transformers, cable routes
+  box(g, 6, 2.5, 3.9, 12.6, 1.25, 1.1, M.light, .05); box(g, 6.2, .14, 4.1, 12.6, 2.55, 1.1, M.mid, .02);
+  for (let i = 0; i < 4; i++) box(g, .95, 1.7, .05, 10.5 + i * 1.32, .95, 3.08, M.mid, .01);
+  for (let i = 0; i < 2; i++) { const x = 10 + i * 3.4, z = 6.6; box(g, 1.9, 1.5, 1.2, x, .78, z, M.mid, .04); for (let k = 0; k < 7; k++) box(g, .05, 1.2, 1.32, x - .7 + k * .23, .78, z, M.dark, 0); for (const s of [-.55, 0, .55]) { cyl(g, .07, .75, x + s, 1.85, z, M.light, 'y', 12, .03); } }
+  tray(g, 1.8, 5.4, 9.3, 5.4, .1, .42); tray(g, 9.3, 3.5, 9.3, 5.4, .1, .42);
+  pipe(g, [[1.8, .15, 5.34], [9.2, .15, 5.34], [9.2, .15, 3.5]], .04, M.pipe, .3); pipe(g, [[1.8, .15, 5.48], [9.38, .15, 5.48], [9.38, .15, 3.5]], .04, M.pipe, .3);
+  // 5 building with rooftop units
+  box(g, 7.4, 3.9, 6, 3, 1.95, 0.4, M.light, .05); box(g, 7.6, .14, 6.2, 3, 3.95, .4, M.mid, .02);
+  for (let f = 0; f < 2; f++) for (let i = 0; i < 6; i++) box(g, .85, .95, .05, .2 + i * 1.12, 1.1 + f * 1.55, 3.42, M.dark, .01);
+  for (let i = 0; i < 3; i++) { const x = .9 + i * 2.2; box(g, 1.75, .85, 1.25, x, 4.45, -.8, M.mid, .03); cyl(g, .42, .05, x, 4.9, -.8, M.dark, 'y', 28); } box(g, 2, .75, 1.2, 3.1, 4.4, 1.9, M.mid, .03); pipe(g, [[.9, 4.3, -.1], [.9, 4.2, 1.9], [2.1, 4.2, 1.9]], .08);
+  // 6 valve and instrument group
+  pipe(g, [[-2.2, .5, 7], [3.5, .5, 7], [4.5, .5, 7]], .12); for (const x of [-1.3, .8, 2.9]) { valve(g, x, .5, 7); instrument(g, x + .85, 7.75, 0, x === .8); box(g, .5, .3, .3, x, .15, 7, M.mid, .02); } box(g, 1.1, 1.75, .5, 5.6, .95, 7.7, M.light, .03);
+  pipe(g, [[-2.2, .5, 7], [-3, .5, 7], [-3, .5, 3.2]], .12);
+  const hotspots = [[-11.5, 8.2, -8.8], [-9.3, 1.6, 3.2], [8.4, 5.5, -8.6], [12.6, 3.1, 1.1], [3, 5.6, -.4], [.8, 1.7, 7.2]];
+  return { g, hotspots };
+}
+
+/* ---------- solution hero: PLC to SCADA close view ---------- */
+function solScene() {
+  const g = G(); plinth(g, 9.6, 6.6);
+  cabinet(g, -3.1, -2.1, 4);
+  rack(g, -4.1, .4, -2.9, 2.5, 2.25);
+  pipe(g, [[-4.6, 2.6, -2.7], [3.6, 2.6, -2.7]], .08); pipe(g, [[-4.6, 2.6, -3.05], [2.2, 2.6, -3.05], [2.7, 2.6, -3.05], [2.7, .36, -3.05], [2.7, .36, -1.5]], .07);
+  valve(g, 1.2, 2.6, -2.7); pump(g, 2.75, -.95, 0, -1); pipe(g, [[3.3, .34, -.95], [3.9, .34, -.95], [3.9, 2.6, -1.6], [3.9, 2.6, -2.7], [3.6, 2.6, -2.7]], .07);
+  tray(g, -3.6, -1.35, -3.6, 1.3, .06, .34); tray(g, -3.6, 1.3, .3, 1.3, .06, .34);
+  pipe(g, [[-3.68, .11, -1.75], [-3.68, .11, 1.22], [.3, .11, 1.22]], .034, M.pipe, .2); pipe(g, [[-3.52, .11, -1.75], [-3.52, .11, 1.38], [.3, .11, 1.38]], .034, M.pipe, .2);
+  pipe(g, [[-1.4, .08, -1.75], [-1.4, .08, 1.15]], .03, M.pipe, .1);
+  for (const [x, z, a] of [[-1.5, -.2, true], [-.45, -.3, false], [.6, -.2, true], [1.65, -.3, false]]) { instrument(g, x, z, 0, a); pipe(g, [[x, .05, z + .02], [x, .05, 1.1]], .018, M.pipe, .05); }
+  consoleDesk(g, 1.9, 1.75);
+  const chair = G(); chair.position.set(1.9, 0, 2.8); g.add(chair);
+  cyl(chair, .26, .04, 0, .05, 0, M.dark, 'y', 20); cyl(chair, .03, .42, 0, .26, 0, M.dark, 'y', 10); box(chair, .5, .08, .5, 0, .5, 0, M.mid, .03); box(chair, .5, .6, .07, 0, .84, .24, M.mid, .03);
+  return g;
+}
+
+/* ---------- icons ---------- */
+const icons = {
+  'system-integration': g => { cabinet(g, -.5, 0, 2); pipe(g, [[.95, .08, .6], [1.5, .08, .6], [1.5, .9, .6]], .05); },
+  'plc-scada': g => consoleDesk(g, 0, 0),
+  'field-services': g => { pump(g, 0, 0); cyl(g, .06, .6, .28, .85, 0, M.dark, 'y', 10); tor(g, .22, .04, .28, 1.15, 0, M.pipe); pipe(g, [[.6, .34, 0], [1.1, .34, 0], [1.1, .75, 0]], .07); },
+  'control-instrumentation': g => { instrument(g, -.4, 0, 0, true, 1.4); instrument(g, .45, .15, 0, false, 1); pipe(g, [[-.4, .04, .1], [.45, .04, .25]], .025, M.pipe, .05); },
+  'supply-installation': g => { cyl(g, .62, .14, -.2, .62, -.35, M.mid, 'z', 36); cyl(g, .62, .14, -.2, .62, .35, M.mid, 'z', 36); cyl(g, .42, .6, -.2, .62, 0, M.pipe, 'z', 32); box(g, .62, .5, .62, .72, .25, .15, M.light, .03); },
+  'turnkey': g => { vessel(g, -.45, -.2, 1.1, .34, 0, { ladder: false, bands: 1 }); box(g, .85, .95, .8, .55, .48, .1, M.light, .04); pipe(g, [[-.1, .55, -.2], [.2, .55, 0]], .06, M.pipe, .1); },
+  'project-management': g => { box(g, 1.6, .08, 1.15, 0, .04, 0, M.mid, .02); [[-.5, .26, .95], [-.3, .0, 1.25], [.1, -.27, .85]].forEach(([x, z, w], i) => box(g, w, .1, .17, x + w / 2 - .4, .14, z, i === 1 ? M.gold : M.pipe, .02)); },
+  'it-consultancy': g => { for (let i = 0; i < 3; i++) { box(g, 1.1, .34, .85, 0, .2 + i * .38, 0, M.light, .03); box(g, .3, .05, .02, -.28, .2 + i * .38, .43, i === 1 ? M.gold : M.pipe, 0); } },
+  'audio-visual': g => { box(g, 1.25, .78, .07, -.2, .95, 0, M.dark, .02); box(g, 1.17, .7, .01, -.2, .95, .04, M.screen, 0); cyl(g, .045, .55, -.2, .3, 0, M.dark, 'y', 10); box(g, .4, .78, .36, .78, .39, .1, M.mid, .03); cyl(g, .13, .02, .78, .54, .29, M.pipe, 'z', 24); cyl(g, .08, .02, .78, .22, .29, M.pipe, 'z', 20); },
+};
+
+/* ---------- render ---------- */
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: true, preserveDrawingBuffer: true });
+renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.NoToneMapping;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.setClearColor(0, 0);
+
+function hash(i, b) { let f = 1, r = 0; while (i > 0) { f /= b; r += f * (i % b); i = Math.floor(i / b); } return r; }
+
+async function render(group, { w, h, samples, camPos, target, fov = 30, floor = 30, shadowSpan = 26, floorOpacity = .34 }) {
+  renderer.setPixelRatio(1); renderer.setSize(w, h, false);
+  const scene = new THREE.Scene(); scene.add(group);
+  const sh = new THREE.Mesh(new THREE.PlaneGeometry(floor * 4, floor * 4), new THREE.ShadowMaterial({ color: '#3B181E', opacity: floorOpacity }));
+  sh.rotation.x = -Math.PI / 2; sh.position.y = group.userData.floorY ?? -.46; sh.receiveShadow = true; scene.add(sh);
+  scene.add(new THREE.HemisphereLight('#ffffff', '#CBBFB2', 1.5));
+  const key = new THREE.DirectionalLight('#FFF4E8', 1.75), fill = new THREE.DirectionalLight('#ffffff', .85);
+  for (const l of [key, fill]) { l.castShadow = true; l.shadow.mapSize.set(2048, 2048); const c = l.shadow.camera; c.left = c.bottom = -shadowSpan; c.right = c.top = shadowSpan; c.near = .5; c.far = 200; l.shadow.bias = -.0006; l.shadow.normalBias = .03; l.shadow.radius = 2; scene.add(l, l.target); }
+  const cam = new THREE.PerspectiveCamera(fov, w / h, .1, 400); cam.position.set(...camPos); cam.lookAt(...target); cam.updateMatrixWorld();
+  const gl = renderer.getContext(), buf = new Uint8Array(w * h * 4), acc = new Float32Array(w * h * 4);
+  for (let i = 0; i < samples; i++) {
+    const a = hash(i + 1, 2), b = hash(i + 1, 3), R = 40;
+    // key: upper left, about 45 degrees, in a soft cone
+    const th = -2.35 + (a - .5) * .75, ph = .82 + (b - .5) * .4;
+    key.position.set(R * Math.cos(ph) * Math.cos(th), R * Math.sin(ph), -R * Math.cos(ph) * Math.sin(th));
+    // fill: sky dome, gives ambient-occlusion-like contact shading
+    const th2 = a * 6.283 * 7 % 6.283, ph2 = Math.asin(Math.sqrt(.15 + .85 * hash(i + 1, 5)));
+    fill.position.set(R * Math.cos(ph2) * Math.cos(th2), R * Math.sin(ph2), R * Math.cos(ph2) * Math.sin(th2));
+    cam.setViewOffset(w, h, hash(i + 1, 7) - .5, hash(i + 1, 11) - .5, w, h);
+    renderer.render(scene, cam);
+    gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, buf);
+    for (let k = 0; k < buf.length; k++) acc[k] += buf[k];
+    if (i % 8 === 0) await new Promise(r => setTimeout(r));
+  }
+  cam.clearViewOffset();
+  const out = document.createElement('canvas'); out.width = w; out.height = h; const c2 = out.getContext('2d'), img = c2.createImageData(w, h);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const s = ((h - 1 - y) * w + x) * 4, d = (y * w + x) * 4, al = acc[s + 3] / samples, f = al > 0 ? 255 / al : 0;
+    img.data[d] = acc[s] / samples * f; img.data[d + 1] = acc[s + 1] / samples * f; img.data[d + 2] = acc[s + 2] / samples * f; img.data[d + 3] = al;
+  }
+  c2.putImageData(img, 0, 0);
+  window.lastCam = cam; window.lastSize = [w, h];
+  scene.remove(group);
+  return out;
+}
+function encode(cv, w, q = .86, fade = .035) {
+  const c = document.createElement('canvas'); c.width = w; c.height = Math.round(cv.height * w / cv.width);
+  const x = c.getContext('2d'), W = c.width, H = c.height; x.imageSmoothingQuality = 'high'; x.drawImage(cv, 0, 0, W, H);
+  // fade shadows out before the image edge, so that no rectangle shows on the page
+  x.globalCompositeOperation = 'destination-in';
+  const f = fade * Math.max(W, H);
+  const gx = x.createLinearGradient(0, 0, W, 0); gx.addColorStop(0, 'rgba(0,0,0,0)'); gx.addColorStop(f / W, '#000'); gx.addColorStop(1 - f / W, '#000'); gx.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gx; x.fillRect(0, 0, W, H);
+  const gy = x.createLinearGradient(0, 0, 0, H); gy.addColorStop(0, 'rgba(0,0,0,0)'); gy.addColorStop(f / H, '#000'); gy.addColorStop(1 - f / H, '#000'); gy.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = gy; x.fillRect(0, 0, W, H);
+  x.globalCompositeOperation = 'source-over';
+  return c.toDataURL('image/webp', q);
+}
+
+window.renderHero = async (samples = 96) => {
+  const g = heroScene(); g.userData.floorY = -.42;
+  const cv = await render(g, { w: 1800, h: 1320, samples, camPos: [11.2, 13.4, 21.4], target: [-.25, .55, .1], shadowSpan: 16 });
+  return { large: encode(cv, 1400), small: encode(cv, 780, .82), crop: (() => { const c = document.createElement('canvas'); c.width = 900; c.height = 700; c.getContext('2d').drawImage(cv, 950, 300, 850, 661, 0, 0, 900, 700); return c.toDataURL('image/webp', .86); })() };
+};
+window.renderSol = async (samples = 96) => {
+  const g = solScene(); g.userData.floorY = -.42;
+  const cv = await render(g, { w: 1500, h: 1170, samples, camPos: [7.8, 8.9, 15.2], target: [-.1, .55, -.15], shadowSpan: 12 });
+  return { large: encode(cv, 1100), small: encode(cv, 720, .82) };
+};
+window.renderPlant = async (samples = 96) => {
+  const { g, hotspots } = plantScene(); g.userData.floorY = -.55;
+  const w = 1800, h = 1200;
+  const cv = await render(g, { w, h, samples, camPos: [27, 30.2, 43], target: [-.1, -.1, .5], shadowSpan: 34, floorOpacity: .3 });
+  const spots = hotspots.map(p => { const v = new THREE.Vector3(...p).project(window.lastCam); return [+(((v.x + 1) / 2) * 100).toFixed(1), +(((1 - v.y) / 2) * 100).toFixed(1)]; });
+  return { large: encode(cv, 1400), small: encode(cv, 780, .82), spots };
+};
+window.renderIcon = async (name, samples = 40) => {
+  const g = G(); icons[name](g);
+  const bx = new THREE.Box3().setFromObject(g), c = bx.getCenter(new THREE.Vector3()), r = bx.getBoundingSphere(new THREE.Sphere()).radius;
+  const wrap = G(); g.position.set(-c.x, -bx.min.y, -c.z); wrap.add(g); wrap.scale.setScalar(1.75 / r); wrap.position.y = -.85 * (bx.max.y - bx.min.y) / (2 * r) * 1.75 / .85;
+  wrap.userData.floorY = wrap.position.y - .01;
+  const cv = await render(wrap, { w: 320, h: 320, samples, camPos: [4.2, 3.9, 6.4], target: [0, 0, 0], fov: 22, shadowSpan: 5, floorOpacity: .14 });
+  return encode(cv, 128, .86, .14);
+};
+
+/* ---------- models for the site: named groups, one mesh per material per group ---------- */
+function named(root, name) { const g = G(); g.name = name; root.add(g); return g; }
+function anchor(g, name, p, extras) { const o = new THREE.Object3D(); o.name = name; o.position.set(...p); o.userData = extras; g.add(o); }
+
+function heroModel() {
+  const root = G(); root.name = 'hero-model';
+  const base = named(root, 'base'), proc = named(root, 'process-equipment'), lines = named(root, 'process-lines'), inst = named(root, 'field-instruments'), sig = named(root, 'signal-paths'), cab = named(root, 'control-cabinets'), desk = named(root, 'scada-desk');
+  plinth(base, 14.6, 9.4);
+  vessel(proc, -5.8, -2.6, 2.9, .72); vessel(proc, -3.7, -3.0, 2.1, .58, 0, { bands: 2 }); hTank(proc, -4.7, .15, 2.7, .55);
+  vessel(proc, -1.15, -3.55, 1.25, .5, 0, { bands: 1, ladder: false }); hTank(proc, 1.35, -3.6, 1.9, .42);
+  rack(proc, -2.6, 2.4, -2.5, 2.25, 2.5);
+  pump(proc, -.35, .15); pump(proc, 2.2, -1.2, 0, -1); pump(proc, -5.6, 2.1); pump(proc, -3.6, 2.1);
+  pipe(lines, [[-5.08, 1.6, -2.6], [-3.2, 1.6, -2.6], [-3.2, 2.34, -2.32], [3.0, 2.34, -2.32], [3.4, 2.34, -2.32], [3.4, .5, -2.32], [3.4, .34, -1.2], [2.8, .34, -1.2]], .085);
+  pipe(lines, [[-3.7, 2.82, -3], [-3.7, 3.25, -3], [-2.75, 3.25, -2.72], [-2.75, 2.34, -2.72], [3.8, 2.34, -2.72], [4.3, 2.34, -2.72], [4.3, .4, -2.72]], .07);
+  pipe(lines, [[-1.15, 2.3, -3.55], [-1.15, 2.34, -2.9]], .06, M.pipe, .15); pipe(lines, [[1.35, 1.17, -3.6], [1.35, 2.34, -3.2], [1.35, 2.34, -2.72]], .05, M.pipe, .2);
+  pipe(lines, [[-5.8, .95, -1.88], [-5.8, .86, -.4], [-5.4, .87, .15]], .085); pipe(lines, [[-3.33, .87, .15], [-2.3, .87, .15], [-1.9, .36, .15], [-.9, .36, .15]], .085);
+  pipe(lines, [[.25, .34, .15], [1.0, .34, .15], [1.0, .34, -1.2], [1.05, 1.25, -1.2], [1.05, 2.34, -2.05], [1.05, 2.34, -2.32]], .085);
+  pipe(lines, [[-5.05, .34, 2.1], [-4.4, .34, 2.1], [-4.4, .34, .9]], .06); pipe(lines, [[-3.05, .34, 2.1], [-2.9, .34, 2.1], [-2.9, .34, 1.1], [-2.9, .87, .35]], .06);
+  flange(lines, -2.3, .87, .15); flange(lines, -3.0, .87, .15);
+  for (const [x, y, z] of [[-2.65, .87, .15], [.62, .34, .15], [0, 2.34, -2.32], [-2.1, 2.34, -2.72], [-.8, 2.34, -2.72], [1.9, 2.34, -2.72]]) valve(lines, x, y, z);
+  instrument(inst, -2.65, 1.3, 0, true); instrument(inst, -1.5, 1.25); instrument(inst, -.35, 1.3, 0, true); instrument(inst, .85, 1.25); instrument(inst, -6.2, -.5, 0); instrument(inst, 3.6, -.3, 0, true, 1.2);
+  tray(sig, -2.65, 1.92, 3.6, 1.92); tray(sig, -6.6, 2.75, -2.9, 2.75, .06, .3);
+  for (const x of [-2.65, -1.5, -.35, .85]) pipe(sig, [[x, .05, 1.34], [x, .07, 1.92]], .022, M.pipe, .08);
+  pipe(sig, [[-2.65, .1, 1.92], [3.3, .1, 1.92], [3.7, .1, 1.92], [3.72, .1, .2], [3.72, .1, -.62]], .032, M.pipe, .2);
+  pipe(sig, [[-1.5, .13, 1.98], [3.4, .13, 1.98], [3.84, .13, 1.98], [3.86, .13, .2], [3.86, .13, -.62]], .032, M.pipe, .2);
+  pipe(sig, [[5.15, .07, -.8], [5.15, .07, 1.3], [4.9, .07, 1.6], [4.9, .07, 2.45]], .036, M.pipe, .25);
+  cabinet(cab, 3.75, -1.15, 3);
+  consoleDesk(desk, 4.65, 3.1);
+  const chair = G(); chair.position.set(4.65, 0, 4.15); desk.add(chair);
+  cyl(chair, .26, .04, 0, .05, 0, M.dark, 'y', 20); cyl(chair, .03, .42, 0, .26, 0, M.dark, 'y', 10); box(chair, .5, .08, .5, 0, .5, 0, M.mid, .03); box(chair, .5, .6, .07, 0, .84, .24, M.mid, .03);
+  return root;
+}
+
+function plantModel() {
+  const root = G(); root.name = 'plant-model';
+  const base = named(root, 'base'), links = named(root, 'process-links');
+  const oil = named(root, 'zone-oil-gas'), water = named(root, 'zone-water-treatment'), dc = named(root, 'zone-district-cooling'), sub = named(root, 'zone-substation'), office = named(root, 'zone-office-bms'), safe = named(root, 'zone-safety-valves');
+  plinth(base, 34, 24, .42);
+  // Oil and gas: columns, separator, pipe rack, flare stack
+  vessel(oil, -13.2, -8.6, 7, 1.0, 0, { bands: 5 }); vessel(oil, -10.7, -8.9, 5.2, .82, 0, { bands: 4 }); vessel(oil, -8.5, -8.6, 3.6, .7);
+  hTank(oil, -11.7, -5.1, 4.2, .72); rack(oil, -13.6, -2.6, -3, 2.4, 2.2);
+  pipe(oil, [[-12.7, 2.4, -8.6], [-12.7, 2.5, -3.2], [-2.6, 2.5, -3.2]], .1); pipe(oil, [[-10.2, 3, -8.5], [-10.2, 2.5, -2.8], [-2.6, 2.5, -2.8]], .09);
+  const fx = -5.4, fz = -9.8;
+  box(oil, 1.3, .2, 1.3, fx, .1, fz, M.mid, .03); cyl(oil, .2, 8.4, fx, 4.3, fz, M.mid, 'y', 14, .11);
+  for (let i = 1; i <= 3; i++) tor(oil, .24 - i * .03, .022, fx, i * 2.2, fz, M.dark);
+  cyl(oil, .14, .55, fx, 8.75, fz, M.dark, 'y', 12, .17);
+  const flame = sph(oil, .3, fx, 9.5, fz, M.gold, 1.9); flame.name = 'flare-flame';
+  for (const [dx, dz] of [[1.8, 1.2], [-1.6, 1.3], [.2, -1.9]]) { const a = new THREE.Vector3(fx, 6.4, fz), b = new THREE.Vector3(fx + dx, .05, fz + dz), l = a.distanceTo(b), m = cyl(oil, .014, l, (a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2, M.dark, 'y', 5); m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), b.clone().sub(a).normalize()); }
+  pipe(oil, [[-7.8, 1.2, -8.6], [fx, .5, -8.6], [fx, .5, fz + .7], [fx, .9, fz + .2]], .08, M.pipe, .25);
+  anchor(oil, 'hotspot-oil-gas', [-11.5, 8.2, -8.8], { label: 'Oil & Gas', page: '/industries/oil-gas/' });
+  // Water treatment
+  for (const [x, z] of [[-11.8, 3.2], [-6.9, 3.2]]) { cyl(water, 2.2, .85, x, .43, z, M.light, 'y', 40); cyl(water, 2.02, .03, x, .86, z, M.dark, 'y', 40); cyl(water, .28, 1.2, x, .6, z, M.mid); box(water, 2.5, .08, .28, x + 1.15, 1.2, z, M.mid, .01); tor(water, 2.22, .03, x, .9, z, M.mid); }
+  for (let i = 0; i < 4; i++) { box(water, 2, .62, 3.3, -13 + i * 2.15, .31, 8.4, M.light, .03); box(water, 1.72, .03, 3, -13 + i * 2.15, .63, 8.4, M.dark, 0); }
+  pipe(water, [[-9.6, .4, 3.2], [-9.1, .4, 3.2]], .1); pipe(water, [[-4.7, .4, 3.2], [-3.2, .4, 3.2], [-3.2, .4, 5.8], [-5.5, .4, 5.8]], .1);
+  pipe(links, [[-3.2, .4, 3.2], [-2.5, .4, -2.4], [-2.5, 2.5, -3.2]], .1);
+  anchor(water, 'hotspot-water-treatment', [-9.3, 1.6, 3.2], { label: 'Water & Wastewater', page: '/industries/water-wastewater/' });
+  // District cooling: plant hall and cooling towers
+  box(dc, 8.4, 3.2, 4.8, 8.4, 1.6, -8.6, M.light, .06);
+  for (let i = 0; i < 7; i++) box(dc, .7, 1.4, .05, 5.3 + i * 1.03, 1.7, -6.18, M.dark, 0);
+  for (let i = 0; i < 4; i++) { const x = 5.2 + i * 2.15; box(dc, 1.95, 1.3, 1.95, x, 3.85, -8.6, M.mid, .03); cyl(dc, .8, .24, x, 4.62, -8.6, M.light, 'y', 24); cyl(dc, .68, .02, x, 4.75, -8.6, M.dark, 'y', 24); box(dc, 1.25, .03, .07, x, 4.78, -8.6, M.light, 0); box(dc, .07, .03, 1.25, x, 4.78, -8.6, M.light, 0); }
+  for (let i = 0; i < 3; i++) pump(dc, 2.0, -5.0 + i * .9, 0, -1);
+  pipe(links, [[4.2, 1.1, -7.2], [1.2, 1.1, -7.2], [1.2, 2.5, -3.2], [-2.6, 2.5, -3.2]], .13); pipe(links, [[4.2, .6, -8], [.7, .6, -8], [.7, 2.2, -3.8]], .1);
+  anchor(dc, 'hotspot-district-cooling', [8.4, 5.5, -8.6], { label: 'District Cooling', page: '/industries/district-cooling/' });
+  // Substation: switch building, transformers, fence, cable route
+  box(sub, 6, 2.5, 3.9, 12.6, 1.25, 1.1, M.light, .05); box(sub, 6.2, .14, 4.1, 12.6, 2.55, 1.1, M.mid, .02);
+  for (let i = 0; i < 4; i++) box(sub, .95, 1.7, .05, 10.5 + i * 1.32, .95, 3.08, M.mid, 0);
+  for (let i = 0; i < 2; i++) { const x = 10.4 + i * 3.4, z = 6.7; box(sub, 1.9, 1.5, 1.2, x, .78, z, M.mid, .04); for (let k = 0; k < 7; k++) box(sub, .05, 1.2, 1.32, x - .7 + k * .23, .78, z, M.dark, 0); for (const s of [-.55, 0, .55]) cyl(sub, .07, .75, x + s, 1.85, z, M.light, 'y', 8, .03); }
+  for (let x = 8.8; x <= 15.41; x += 1.65) { for (const z of [4.9, 8.5]) cyl(sub, .03, 1.15, x, .58, z, M.dark, 'y', 6); }
+  for (const z of [4.9, 8.5]) for (const y of [.45, 1.1]) box(sub, 6.65, .025, .025, 12.1, y, z, M.dark, 0);
+  for (const x of [8.8, 15.4]) for (const y of [.45, 1.1]) box(sub, .025, .025, 3.6, x, y, 6.7, M.dark, 0);
+  tray(sub, 1.8, 5.4, 8.6, 5.4, .1, .42); tray(sub, 9.3, 3.5, 9.3, 4.8, .1, .42); pipe(sub, [[1.8, .15, 5.34], [9.2, .15, 5.34], [9.2, .15, 3.5]], .04, M.pipe, .3); pipe(sub, [[1.8, .15, 5.48], [9.38, .15, 5.48], [9.38, .15, 3.5]], .04, M.pipe, .3);
+  anchor(sub, 'hotspot-substation', [12.6, 3.1, 1.1], { label: 'Power & Infrastructure', page: '/industries/power-infrastructure/' });
+  // Office building with rooftop BMS
+  box(office, 7.4, 3.9, 6, 3, 1.95, .4, M.light, .05); box(office, 7.6, .14, 6.2, 3, 3.95, .4, M.mid, .02);
+  for (let f = 0; f < 2; f++) for (let i = 0; i < 6; i++) box(office, .85, .95, .05, .2 + i * 1.12, 1.1 + f * 1.55, 3.42, M.dark, 0);
+  for (let i = 0; i < 3; i++) { const x = .9 + i * 2.2; box(office, 1.75, .85, 1.25, x, 4.45, -.8, M.mid, .03); cyl(office, .42, .05, x, 4.9, -.8, M.dark, 'y', 16); }
+  box(office, 2, .75, 1.2, 3.1, 4.4, 1.9, M.mid, .03); pipe(office, [[.9, 4.3, -.1], [.9, 4.2, 1.9], [2.1, 4.2, 1.9]], .08);
+  const bms = named(office, 'rooftop-bms'); box(bms, .7, .95, .32, 5.4, 4.5, 1.9, M.light, .02); box(bms, .5, .28, .02, 5.4, 4.68, 2.07, M.screen, 0); for (let i = 0; i < 3; i++) box(bms, .1, .06, .02, 5.26 + i * .14, 4.32, 2.07, i === 1 ? M.gold : M.mid, 0); cyl(bms, .012, .55, 5.62, 5.2, 1.82, M.dark, 'y', 5); pipe(bms, [[5.4, 4.1, 1.78], [5.4, 4.08, 1.9], [4.1, 4.08, 1.9]], .03, M.pipe, .1);
+  anchor(office, 'hotspot-office-bms', [3, 5.6, -.4], { label: 'HVAC & Building Management Systems', page: '/industries/hvac-building-management-systems/' });
+  // Safety valves
+  pipe(safe, [[-2.2, .5, 7], [3.5, .5, 7], [4.5, .5, 7]], .12); for (const x of [-1.3, .8, 2.9]) { valve(safe, x, .5, 7); instrument(safe, x + .85, 7.75, 0, x === .8); box(safe, .5, .3, .3, x, .15, 7, M.mid, .02); } box(safe, 1.1, 1.75, .5, 5.6, .95, 7.7, M.light, .03);
+  pipe(links, [[-2.2, .5, 7], [-3, .5, 7], [-3, .5, 3.2]], .12);
+  anchor(safe, 'hotspot-safety-valves', [.8, 1.7, 7.2], { label: 'Safety Instrumented Systems', page: '/industries/safety-instrumented-systems/' });
+  return root;
+}
+
+// One mesh per material per group, so that a zone can be highlighted as a unit and draw calls stay low.
+function bake(root) {
+  root.updateMatrixWorld(true);
+  const out = G(); out.name = root.name;
+  const inv = new THREE.Matrix4().copy(root.matrixWorld).invert();
+  const walk = (src, dest) => {
+    const buckets = new Map(), pending = [];
+    const collect = o => { for (const c of o.children) { if (c.isMesh) { const g = c.geometry.clone(); g.applyMatrix4(new THREE.Matrix4().multiplyMatrices(inv, c.matrixWorld)); const n = g.index ? g.toNonIndexed() : g; for (const a of Object.keys(n.attributes)) if (a !== 'position' && a !== 'normal') n.deleteAttribute(a); (buckets.get(c.material) || buckets.set(c.material, []).get(c.material)).push(n); if (c.children.length) collect(c); } else if (c.isGroup && c.name) pending.push(c); else if (c.isGroup) collect(c); else if (c.name) { const a = new THREE.Object3D(); a.name = c.name; a.position.copy(c.position); a.userData = c.userData; dest.add(a); } } };
+    collect(src);
+    for (const [mat, list] of buckets) { const m = new THREE.Mesh(mergeGeometries(list, false), mat); m.name = dest.name + '-' + mat.name.replace('vt-', ''); dest.add(m); }
+    for (const c of pending) { const g = G(); g.name = c.name; dest.add(g); walk(c, g); }
+  };
+  for (const c of root.children) { const g = G(); g.name = c.name; out.add(g); walk(c, g); }
+  return out;
+}
+
+window.exportModel = async which => {
+  Object.assign(Q, LOW);
+  const baked = bake(which === 'hero' ? heroModel() : plantModel());
+  let tris = 0, draws = 0; baked.traverse(o => { if (o.isMesh) { tris += o.geometry.attributes.position.count / 3; draws++; } });
+  const buf = await new Promise((res, rej) => new GLTFExporter().parse(baked, res, rej, { binary: true }));
+  let bin = ''; const u = new Uint8Array(buf); for (let i = 0; i < u.length; i += 32768) bin += String.fromCharCode.apply(null, u.subarray(i, i + 32768));
+  return { b64: btoa(bin), tris, draws };
+};
+
+window.renderGlb = async (file, opts, samples = 128) => {
+  const loader = new GLTFLoader(); loader.setMeshoptDecoder(MeshoptDecoder);
+  const g = await new Promise((res, rej) => loader.load(file, res, null, rej));
+  const root = g.scene, names = [], anchors = {}; let tris = 0, draws = 0;
+  root.updateMatrixWorld(true);
+  root.traverse(o => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; draws++; tris += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; } else if (o.name) { names.push(o.name); } if (o.name && o.name.startsWith('hotspot-')) anchors[o.name] = { p: o.getWorldPosition(new THREE.Vector3()).toArray(), extras: o.userData }; });
+  const wrap = G(); wrap.add(root); wrap.userData.floorY = opts.floorY;
+  const cv = await render(wrap, opts);
+  const spots = Object.entries(anchors).map(([n, a]) => { const v = new THREE.Vector3(...a.p).project(window.lastCam); return { name: n, label: a.extras.label, page: a.extras.page, x: +(((v.x + 1) / 2) * 100).toFixed(1), y: +(((1 - v.y) / 2) * 100).toFixed(1) }; });
+  return { large: encode(cv, opts.largeW || 1400), small: encode(cv, 780, .8), names, tris, draws, spots };
+};
+
+window.iconNames = Object.keys(icons);
+window.ready = true;
+</script>

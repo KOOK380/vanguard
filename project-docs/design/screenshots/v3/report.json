@@ -1,0 +1,306 @@
+{
+ "home-1440": {
+  "height": 4269,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   391,
+   2971,
+   3878
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Industrial automation and system integration for the UAE @177",
+   "Our solutions @927",
+   "Industries we serve @1579",
+   "From field instruments to SCADA @2125",
+   "How we work @2845",
+   "Why Vanguard @3180",
+   "Capabilities @3469",
+   "Tell us about your system @3786"
+  ],
+  "m3d": [
+   "3D HERO @324",
+   "3D PLANT MODEL @2579"
+  ],
+  "icons": 15,
+  "smallTargets": [],
+  "errs": []
+ },
+ "solution-1440": {
+  "height": 3148,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   358,
+   2758
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "PLC and SCADA design and validation @221",
+   "What we deliver @647",
+   "From field instruments to SCADA @1040",
+   "How we work @1760",
+   "FAQs @2007",
+   "Tell us which platform your site runs on @2666"
+  ],
+  "m3d": [
+   "3D PLANT MODEL @1495"
+  ],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "solution2-1440": {
+  "height": 2457,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   385,
+   821,
+   2066
+  ],
+  "firstScreen": true,
+  "tel": 2,
+  "headings": [
+   "Field services and annual maintenance contracts @221",
+   "What we deliver @674",
+   "How we work @1141",
+   "FAQs @1388",
+   "Tell us about your plant @1974"
+  ],
+  "m3d": [],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "industry-1440": {
+  "height": 2578,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   331,
+   2187
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Automation and control for district cooling plants @221",
+   "Operator challenges @540",
+   "How Vanguard helps @879",
+   "See it on the model @1349",
+   "Discuss your plant @2095"
+  ],
+  "m3d": [
+   "3D PLANT MODEL @1850"
+  ],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "capabilities-1440": {
+  "height": 3243,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   282,
+   1127,
+   2852
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Capabilities and company details @145",
+   "What we do @491",
+   "Our Partners @756",
+   "Company details @1009",
+   "Preparing a shortlist? @1035",
+   "The types of work we deliver @1362",
+   "Tell us about your system @2760"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [],
+  "errs": []
+ },
+ "contact-1440": {
+  "height": 1835,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": false,
+  "primaryCtaY": [
+   1445
+  ],
+  "firstScreen": false,
+  "tel": 3,
+  "headings": [
+   "Start a consultation @145",
+   "Send your enquiry @330",
+   "Contact details @330",
+   "What happens after your enquiry @582"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [],
+  "errs": []
+ },
+ "home-390": {
+  "height": 6699,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": true,
+  "primaryCtaY": [
+   371,
+   4744,
+   5778
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Industrial automation and system integration for the UAE @133",
+   "Our solutions @1192",
+   "Industries we serve @2468",
+   "From field instruments to SCADA @3426",
+   "How we work @4476",
+   "Why Vanguard @4889",
+   "Capabilities @5340",
+   "Tell us about your system @5669"
+  ],
+  "m3d": [
+   "3D HERO @636",
+   "3D PLANT MODEL @3763"
+  ],
+  "icons": 15,
+  "smallTargets": [],
+  "errs": []
+ },
+ "solution-390": {
+  "height": 4201,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": true,
+  "primaryCtaY": [
+   379,
+   3281
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "PLC and SCADA design and validation @177",
+   "What we deliver @727",
+   "From field instruments to SCADA @1441",
+   "How we work @1979",
+   "FAQs @2304",
+   "Tell us which platform your site runs on @3167"
+  ],
+  "m3d": [
+   "3D PLANT MODEL @1778"
+  ],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "solution2-390": {
+  "height": 3883,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": true,
+  "primaryCtaY": [
+   415,
+   1591,
+   2962
+  ],
+  "firstScreen": true,
+  "tel": 2,
+  "headings": [
+   "Field services and annual maintenance contracts @177",
+   "What we deliver @764",
+   "How we work @1786",
+   "FAQs @2111",
+   "Tell us about your plant @2853"
+  ],
+  "m3d": [],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "industry-390": {
+  "height": 3849,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": true,
+  "primaryCtaY": [
+   367,
+   2928
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Automation and control for district cooling plants @177",
+   "Operator challenges @576",
+   "How Vanguard helps @1247",
+   "See it on the model @2046",
+   "Discuss your plant @2819"
+  ],
+  "m3d": [
+   "3D PLANT MODEL @2403"
+  ],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "capabilities-390": {
+  "height": 4466,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": true,
+  "primaryCtaY": [
+   303,
+   1536,
+   3545
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Capabilities and company details @101",
+   "What we do @512",
+   "Our Partners @879",
+   "Company details @1132",
+   "Preparing a shortlist? @1427",
+   "The types of work we deliver @1707",
+   "Tell us about your system @3412"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [],
+  "errs": []
+ },
+ "contact-390": {
+  "height": 3172,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": true,
+  "primaryCtaY": [
+   1787
+  ],
+  "firstScreen": false,
+  "tel": 1,
+  "headings": [
+   "Start a consultation @101",
+   "Send your enquiry @290",
+   "Contact details @1899",
+   "What happens after your enquiry @2172"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [],
+  "errs": []
+ }
+}

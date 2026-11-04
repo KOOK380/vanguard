@@ -1,0 +1,252 @@
+{
+ "home-1440": {
+  "height": 4910,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   391,
+   4519
+  ],
+  "firstScreen": true,
+  "tel": 1,
+  "headings": [
+   "Industrial automation and system integration for the UAE @177",
+   "Our solutions @1136",
+   "Industries we serve @2173",
+   "Why Vanguard @2896",
+   "Capabilities @3185",
+   "From field instruments to SCADA @3503",
+   "How we work @4180",
+   "Tell us about your system @4427"
+  ],
+  "m3d": [
+   "3D HERO @324",
+   "3D PLANT MODEL @3754"
+  ],
+  "icons": 15,
+  "smallTargets": [],
+  "errs": []
+ },
+ "solution-1440": {
+  "height": 2199,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   1808
+  ],
+  "firstScreen": false,
+  "tel": 1,
+  "headings": [
+   "PLC and SCADA design and validation @221",
+   "What we deliver @503",
+   "How we work @896",
+   "Industries served @1143",
+   "FAQs @1379",
+   "Discuss your SCADA scope @1756"
+  ],
+  "m3d": [],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "industry-1440": {
+  "height": 2135,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   1744
+  ],
+  "firstScreen": false,
+  "tel": 1,
+  "headings": [
+   "Automation and control for district cooling plants @221",
+   "Operator challenges @433",
+   "How Vanguard helps @890",
+   "Typical systems we deliver @1360",
+   "Discuss your plant @1692"
+  ],
+  "m3d": [],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "capabilities-1440": {
+  "height": 2947,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   2556
+  ],
+  "firstScreen": false,
+  "tel": 1,
+  "headings": [
+   "Capabilities and company details @145",
+   "What we do @427",
+   "The types of work we deliver @766",
+   "Company details @1903",
+   "Our Partners @2212",
+   "Preparing a shortlist? @2464"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [],
+  "errs": []
+ },
+ "contact-1440": {
+  "height": 2349,
+  "overflowX": false,
+  "headerCta": true,
+  "stickyCta": false,
+  "primaryCtaY": [
+   1711
+  ],
+  "firstScreen": false,
+  "tel": 3,
+  "headings": [
+   "Start a consultation @145",
+   "Send your enquiry @427",
+   "Contact details @427",
+   "What happens after your enquiry @1920"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [],
+  "errs": []
+ },
+ "home-390": {
+  "height": 8412,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": false,
+  "primaryCtaY": [
+   379,
+   7565
+  ],
+  "firstScreen": true,
+  "tel": 0,
+  "headings": [
+   "Industrial automation and system integration for the UAE @141",
+   "Our solutions @1437",
+   "Industries we serve @3768",
+   "Why Vanguard @5204",
+   "Capabilities @5784",
+   "From field instruments to SCADA @6109",
+   "How we work @6968",
+   "Tell us about your system @7457"
+  ],
+  "m3d": [
+   "3D HERO @644",
+   "3D PLANT MODEL @6302"
+  ],
+  "icons": 15,
+  "smallTargets": [
+   "View all solutions",
+   "View all industries",
+   "View capabilities",
+   "Open the page"
+  ],
+  "errs": []
+ },
+ "solution-390": {
+  "height": 3060,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": false,
+  "primaryCtaY": [
+   2213
+  ],
+  "firstScreen": false,
+  "tel": 0,
+  "headings": [
+   "PLC and SCADA design and validation @185",
+   "What we deliver @484",
+   "How we work @1213",
+   "Industries served @1554",
+   "FAQs @1774",
+   "Discuss your SCADA scope @2168"
+  ],
+  "m3d": [],
+  "icons": 1,
+  "smallTargets": [],
+  "errs": []
+ },
+ "industry-390": {
+  "height": 2999,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": false,
+  "primaryCtaY": [
+   2152
+  ],
+  "firstScreen": false,
+  "tel": 0,
+  "headings": [
+   "Automation and control for district cooling plants @185",
+   "Operator challenges @408",
+   "How Vanguard helps @1095",
+   "Typical systems we deliver @1830",
+   "Discuss your plant @2107"
+  ],
+  "m3d": [],
+  "icons": 1,
+  "smallTargets": [
+   "Control & Instrumentation Engi",
+   "PLC/SCADA Design & Validation",
+   "Supply & Field Installation"
+  ],
+  "errs": []
+ },
+ "capabilities-390": {
+  "height": 4619,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": false,
+  "primaryCtaY": [
+   3772
+  ],
+  "firstScreen": false,
+  "tel": 0,
+  "headings": [
+   "Capabilities and company details @109",
+   "What we do @408",
+   "The types of work we deliver @933",
+   "Company details @3117",
+   "Our Partners @3395",
+   "Preparing a shortlist? @3663"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [
+   "See names and titles on our Ab"
+  ],
+  "errs": []
+ },
+ "contact-390": {
+  "height": 3064,
+  "overflowX": false,
+  "headerCta": false,
+  "stickyCta": false,
+  "primaryCtaY": [
+   1644
+  ],
+  "firstScreen": false,
+  "tel": 0,
+  "headings": [
+   "Start a consultation @109",
+   "Send your enquiry @347",
+   "Contact details @1756",
+   "What happens after your enquiry @2073"
+  ],
+  "m3d": [],
+  "icons": 0,
+  "smallTargets": [
+   "+971 2 626 8001",
+   "info@vanguardgcc.com"
+  ],
+  "errs": []
+ }
+}
