@@ -40,3 +40,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Dry-run output of the Sanity import
+scripts/sanity-import.ndjson
+
+# Playwright
+/test-results/
+/playwright-report/

@@ -84,13 +84,31 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 ## Header
 
-**Logo:** Vanguard Technology, linked to the home page
+**Logo:** Vanguard Technology
 
-**Main menu:** About | Solutions | Industries | Capabilities
+**Main menu:** Home | About | Solutions | Industries | Capabilities | Our Group | Contact
+
+**Solutions menu link:** View all solutions
+
+**Industries menu link:** View all industries
 
 **Phone link:** +971 2 626 8001
 
-**Button:** Start a consultation. Hidden on the Contact page, whose H1 is the same.
+**Button:** Request a quote
+
+**Main menu name:** Main
+
+**Phone menu button name:** Menu
+
+**Close menu button name:** Close menu
+
+**Phone action bar name:** Quick contact
+
+**Skip link:** Skip to content
+
+**Breadcrumb name:** Breadcrumb
+
+> **Build note:** The logo links to the home page. The main menu follows decision 248. Solutions and Industries open a panel with their pages, by page name, and the menu link to `/solutions/` or `/industries/`. The button links to `/contact-us/` with nothing pre-filled, and is hidden on the Contact page (decision 249). The four names are accessible names (decision 252). The skip link is the first item on every page (decision 245). The breadcrumb name labels the breadcrumb at the top of every page except Home; its items are the menu names, then the page's own name (decision 277). Transparent at the top of the page, and solid (paper with the header shadow) after 50 px of scroll. Desktop menu from 1280 px; the phone menu below that (decision 250).
 
 ---
 
@@ -98,14 +116,13 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 ## Phone action bar
 
-> **Build note:** Fixed to the bottom of the screen under 768 px, on every page. It replaces the header button on phones, and must not cover content or the cookie banner.
+> **Build note:** Fixed to the bottom of the screen under 768 px, on every page. It replaces the header button on phones, and must not cover content or the cookie banner. Call links to `tel:+97126268001`. WhatsApp shows only once a WhatsApp number is confirmed (open fact 69); until then the bar shows Call and Get a quote. Get a quote links to `/contact-us/` with nothing pre-filled. On the Contact page it is replaced by Email us (`mailto:info@vanguardgcc.com`), styled as a secondary button so that the form stays the main action (decision 251).
 
-| Page | Left button | Right button |
-|---|---|---|
-| All pages, unless listed | Call | Start a consultation |
-| Solution and industry pages | Call | The page's primary button |
-| Capabilities | Call | Request company documents |
-| Contact | Call | Email us, styled as a secondary button so that the form stays the main action |
+**Buttons:** Call | WhatsApp | Get a quote
+
+**Contact page button:** Email us
+
+**WhatsApp pre-filled message:** Hello Vanguard, I'd like to discuss a project.
 
 ---
 
@@ -125,7 +142,11 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 **Copyright:** © [current year] Vanguard Technology. All rights reserved.
 
+**Newsletter:** The newsletter sign-up sits in the footer, between the link columns and the legal row (see Newsletter sign-up).
+
 > **Internal note, do not publish:** Open fact 43 sets the current year only. No social icons, because no account is known (open fact 28).
+
+> **Build note:** Maroon-900, as in the approved design (decision 254). On phones, the Solutions and Industries columns are left out, and the Company list adds "Solutions" and "Industries" links to the overview pages. Social links appear only once real profile URLs are added to `src/content/site.ts` (decision 257). "Cookie settings" is added with the cookie banner, because until then it has nothing to open (decision 258).
 
 ---
 
@@ -182,6 +203,18 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 **Sending failed:** We could not complete your sign-up. Try again later.
 
+**Confirmation email subject:** Confirm your newsletter subscription
+
+**Confirmation email text:** Select the button below to confirm that you want the Vanguard Technology newsletter. If you did not sign up, ignore this email.
+
+**Confirmation email button:** Confirm subscription
+
+**Confirmed page heading:** Your subscription is confirmed.
+
+**Expired link heading:** This link has expired.
+
+**Expired link text:** Sign up again from the footer of any page.
+
 > **Internal note, do not publish:** Who writes the newsletter, what it covers and which tool sends it are unknown (open fact 64). Do not launch the form until these are settled.
 
 ---
@@ -222,7 +255,9 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 **Spam-trap field label (hidden from view and from screen readers):** Leave this field empty
 
-**Privacy note above the button:** We use these details to respond to your enquiry. See our [Privacy Policy](/privacy-policy/).
+**Consent checkbox above the button, not ticked by default:** I agree that Vanguard Technology may use these details to respond to my enquiry. See the [Privacy Policy](/privacy-policy/).
+
+**Consent error:** Tick the box to confirm that we may use your details.
 
 **Button:** Send enquiry
 
@@ -263,6 +298,14 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 **Secondary button:** Explore solutions
 
+**Hero caption:** Illustrative model
+
+**Hero image alt text:** Illustrative 3D model of a generic control system: process vessels and pipework, field instruments, PLC cabinets and a SCADA desk.
+
+**Animation pause button:** Pause animation
+
+**Animation play button:** Play animation
+
 ### Section: proof points
 
 > **Build note:** These replace statistics, because no numbers can be sourced.
@@ -300,6 +343,8 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 **Hotspots:** The six industry hotspots, listed in the 3D plant model section. Each opens its text and links to its page.
 
+**Panel button:** Talk to an engineer
+
 ### How we work
 
 | Step | Title | Sentence |
@@ -311,6 +356,16 @@ Copy is proofread and checked against the sources, but these items are still ope
 | 5 | **Maintain** | We support the system through annual maintenance contracts, field services and retrofits. |
 
 > **Build note:** Step numbers show order only. They are not statistics.
+
+**Photo alt text, Consult:** Control room with a long desk, two chairs and wall panels of instruments
+
+**Photo alt text, Design:** Gloved hands testing the wiring in a control panel with a multimeter
+
+**Photo alt text, Supply:** Row of blue electrical switchgear panels
+
+**Photo alt text, Install:** Cable tray and red pipework fixed under a concrete ceiling
+
+**Photo alt text, Maintain:** Hands using tools on the terminal box of an electric motor
 
 ### Why Vanguard
 
@@ -332,13 +387,19 @@ Copy is proofread and checked against the sources, but these items are still ope
 
 **Photo caption:** Illustrative photo
 
+**Photo alt text:** Black and white view of insulated process pipework and valves
+
 ### Tell us about your system
 
 **Body:** Start with a free consultation. Share your sector, site and scope.
 
-**Primary button:** Start a consultation
+**Primary button:** Request a quote
 
-**Secondary button:** Call +971 2 626 8001
+**Secondary button:** WhatsApp
+
+**Secondary button until WhatsApp is confirmed:** Call +971 2 626 8001
+
+> **Build note:** The primary button links to `/contact-us/` with nothing pre-filled. WhatsApp shows only once a number is confirmed (open fact 69); until then the Call button takes its place (decision 271).
 
 > **Internal sources, do not publish.**
 
@@ -538,6 +599,8 @@ Ask us for the company documents your prequalification process needs.
 
 **Buttons:** Discuss your integration scope (pre-filled) | View capabilities
 
+**Closing band H2:** Tell us about your system
+
 > **Internal note, do not publish:** F2, F3, F4, F5, F6, F7, F9, F29.
 
 ---
@@ -581,6 +644,8 @@ Yes. We work on HVAC control systems and integrated building and energy manageme
 See "Industry standards for this work" on our About page, and ask us which apply. We do not claim certification against them.
 
 **Buttons:** Discuss your engineering scope (pre-filled) | See PLC and SCADA design
+
+**Closing band H2:** Tell us about your system
 
 > **Internal note, do not publish:** F4, F5, F6, F8. The site lists safety instrumented systems with no detail (open fact 59).
 
@@ -626,6 +691,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Buttons:** Request a supply or installation quote (pre-filled) | See turnkey projects
 
+**Closing band H2:** Tell us about your system
+
 > **Internal note, do not publish:** F4, F5, F7, F10, F21, decision 82. "Distribution boards" spells out the site's "DB". No brands are named (open fact 17).
 
 ---
@@ -669,6 +736,8 @@ Tell us the part you need. We will confirm what we can take on.
 Send us your specification, drawings, site location and programme.
 
 **Buttons:** Discuss your project (pre-filled) | See project management
+
+**Closing band H2:** Tell us about your system
 
 > **Internal note, do not publish:** F2, F4, F5, F6, F7, F8, F10, F29. Commissioning is left out (open fact 55).
 
@@ -714,6 +783,8 @@ Send your scope, programme, site location and contract arrangements.
 
 **Buttons:** Discuss your project (pre-filled) | See turnkey projects
 
+**Closing band H2:** Tell us about your system
+
 > **Internal note, do not publish:** F4, F5, F7, F20. The site names project management with no detail, so the page stays with its listed support items.
 
 ---
@@ -757,6 +828,8 @@ We offer 24/7 support. Ask us what coverage your contract would include.
 Send us the site location, control system in use, your current support arrangement and the support you need.
 
 **Buttons:** Ask about a maintenance contract (pre-filled) | Call us
+
+**Closing band H2:** Tell us about your plant
 
 > **Internal note, do not publish:** F4, F5, F6, F7, F11, F20. No terms are added to 24/7 support (open fact 19).
 
@@ -802,6 +875,8 @@ See "Industry standards for this work" on our About page, and ask us which apply
 
 **Buttons:** Discuss your SCADA scope (pre-filled) | See oil and gas
 
+**Closing band H2:** Tell us which platform your site runs on
+
 > **Internal note, do not publish:** F3, F4, F5, F6, F9, F23. No platforms are named (open fact 17). Standards: open fact 16.
 
 ---
@@ -845,6 +920,8 @@ Tell us what you need reviewed. We will confirm how we can help.
 Start with a free consultation. Share your organisation, systems and goals.
 
 **Buttons:** Discuss your IT requirements (pre-filled) | About Vanguard Technology
+
+**Closing band H2:** Tell us about your system
 
 > **Internal note, do not publish:** F5, F7, F11, F22, F28, F29. Archived services are left out because they may no longer be offered (F27, open fact 57).
 
@@ -890,6 +967,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Buttons:** Discuss your AV project (pre-filled) | About Vanguard Technology
 
+**Closing band H2:** Tell us about your system
+
 > **Internal note, do not publish:** F21, F26, decision 82. No brands are named (open fact 17).
 
 ---
@@ -933,6 +1012,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Intro:** SCADA, communications and control systems, with instrumentation and field installation.
 
+**Photo alt text:** Refinery columns and process pipework
+
 **Operator challenges**
 1. **Dispersed field sites.** Field sites can cover large areas and rely on a mix of wired, cellular, satellite and radio links.
 2. **Mixed equipment.** Legacy equipment and devices from different manufacturers can make integration difficult.
@@ -973,6 +1054,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 **H1:** Automation and control for water and wastewater
 
 **Intro:** SCADA and control systems, with PLC programs and maintenance.
+
+**Photo alt text:** Aerial view of round and rectangular treatment tanks
 
 **Operator challenges**
 1. **Lost site data.** Remote pumping sites can lose readings when a cellular or radio link fails, unless data is stored locally.
@@ -1015,6 +1098,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Intro:** Control systems and SCADA for plants, with retrofit and annual maintenance contracts.
 
+**Photo alt text:** Rows of large outdoor cooling units
+
 **Operator challenges**
 1. **Low delta-T.** Many district cooling systems see low return temperatures, which raises water flow and congests the network.
 2. **Chiller demand.** Low delta-T can mean more chiller operation and less use of free cooling.
@@ -1056,6 +1141,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Intro:** SCADA and control systems, electrical installation and project management.
 
+**Photo alt text:** Industrial plant with tall striped stacks
+
 **Operator challenges**
 1. **Ageing control systems.** Spare parts and people who know older control systems become harder to find.
 2. **Connections to older systems.** Linking auxiliary systems such as water treatment and emissions monitoring to an old control system can be difficult.
@@ -1096,6 +1183,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Intro:** HVAC control and integrated building and energy management systems.
 
+**Photo alt text:** Rooftop air conditioning units in rows
+
 **Operator challenges**
 1. **Sensor drift.** Temperature, pressure and CO2 readings can lose accuracy, so controls respond to bad information.
 2. **Forgotten overrides.** A set point changed to resolve a complaint may never be reset.
@@ -1135,6 +1224,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 **H1:** Safety instrumented systems
 
 **Intro:** Our control, electrical and instrumentation engineers work on these systems.
+
+**Photo alt text:** Control panel with coloured push buttons
 
 **Operator challenges**
 1. **Bypass control.** Trip bypasses without time limits or authorisation records can outlast the shift they were meant for.
@@ -1904,12 +1995,12 @@ Section order tested in [design/wireframes.html](design/wireframes.html) at 1440
 |---|---|---|
 | **Home** | Hero with buttons; proof points and Our Partners; Our solutions; Industries we serve; From field instruments to SCADA; How we work, with a button; Why Vanguard; Capabilities; Tell us about your system | 3D hero; 3D icons on solution rows; photos on industry cards; 3D plant model |
 | **PLC/SCADA Design & Validation** | Hero with buttons and linked industries; What we deliver; From field instruments to SCADA; How we work; FAQs; Our Partners and Based in Abu Dhabi; closing band "Tell us which platform your site runs on", with Discuss your SCADA scope and Request company documents | Static 3D render in hero; 3D plant model |
-| **Other solution pages** | Hero with buttons and linked industries; What we deliver; How we work; FAQs; Our Partners and Based in Abu Dhabi; closing band "Tell us about your system" | 3D icon in hero |
-| **Field Services & Annual Maintenance Contracts** | As other solution pages, with the quote FAQ as a callout beside What we deliver, and a closing band "Tell us about your plant" | 3D icon in hero |
-| **Industry pages** | Hero with intro and buttons; Operator challenges; How Vanguard helps; See it on the model, with Typical systems we deliver; closing band with the page's primary button as H2 | 3D icon in hero; 3D plant model focused on the page's hotspot |
+| **Other solution pages** | Hero with buttons and linked industries; What we deliver; How we work; FAQs; Our Partners and Based in Abu Dhabi; closing band "Tell us about your system" | Static 3D render in hero |
+| **Field Services & Annual Maintenance Contracts** | As other solution pages, with the quote FAQ as a callout beside What we deliver, and a closing band "Tell us about your plant" | Static 3D render in hero |
+| **Industry pages** | Hero with intro and buttons; Operator challenges; How Vanguard helps; See it on the model, with Typical systems we deliver; closing band with the page's primary button as H2 | 3D plant model focused on the page's hotspot |
 | **Capabilities** | Hero with buttons; What we do; Our Partners; Company details beside Preparing a shortlist?; The types of work we deliver, as a single column of expanding profiles with the label always visible and the first open; Tell us about your system | None |
 | **Contact** | Hero; form in three groups, beside Contact details and What happens after your enquiry on desktop, and above them on phones | None |
 
 **Home card order:** System Integration, PLC/SCADA Design & Validation, Field Services & Annual Maintenance Contracts, Control & Instrumentation Engineering, Supply & Field Installation, Turnkey Projects, Project Management, IT Consultancy, Audio/Visual Integration. This follows the priority tiers in [keyword-plan.md](keyword-plan.md).
 
-**3D icons** are small pre-rendered images, not WebGL (decisions 191 and 203). The visual design of Home, PLC/SCADA and Contact is in [design/design-review.md](design/design-review.md).
+**3D icons** on Home are live low-poly models in one shared canvas on capable desktops, with matching SVG icons everywhere else (decision 275, replacing the pre-rendered images of decisions 191 and 203). **Live 3D** appears on capable desktops only, and everyone else sees the still image with the same links (decision 226). The visual design of Home, PLC/SCADA and Contact is in [design/design-review.md](design/design-review.md).

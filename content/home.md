@@ -20,6 +20,14 @@ Page: `/`. Follows [tone.md](../project-docs/tone.md) and [keyword-plan.md](../p
 
 **Secondary button:** Explore solutions
 
+**Hero caption:** Illustrative model
+
+**Hero image alt text:** Illustrative 3D model of a generic control system: process vessels and pipework, field instruments, PLC cabinets and a SCADA desk.
+
+**Animation pause button:** Pause animation
+
+**Animation play button:** Play animation
+
 ## Copy: proof points
 
 These replace statistics, because no numbers can be sourced.
@@ -63,6 +71,8 @@ These replace statistics, because no numbers can be sourced.
 
 **Hotspots:** The six industry hotspots, listed in the 3D plant model section. Each opens its text and links to its page.
 
+**Panel button:** Talk to an engineer
+
 ## Copy: process
 
 **H2:** How we work
@@ -76,6 +86,16 @@ These replace statistics, because no numbers can be sourced.
 | 5 | **Maintain** | We support the system through annual maintenance contracts, field services and retrofits. |
 
 Step numbers show order only. They are not statistics.
+
+**Photo alt text, Consult:** Control room with a long desk, two chairs and wall panels of instruments
+
+**Photo alt text, Design:** Gloved hands testing the wiring in a control panel with a multimeter
+
+**Photo alt text, Supply:** Row of blue electrical switchgear panels
+
+**Photo alt text, Install:** Cable tray and red pipework fixed under a concrete ceiling
+
+**Photo alt text, Maintain:** Hands using tools on the terminal box of an electric motor
 
 ## Copy: why Vanguard
 
@@ -101,15 +121,21 @@ Step numbers show order only. They are not statistics.
 
 **Photo caption:** Illustrative photo
 
+**Photo alt text:** Black and white view of insulated process pipework and valves
+
 ## Copy: final call to action
 
 **H2:** Tell us about your system
 
 **Body:** Start with a free consultation. Share your sector, site and scope.
 
-**Primary button:** Start a consultation
+**Primary button:** Request a quote
 
-**Secondary button:** Call +971 2 626 8001
+**Secondary button:** WhatsApp
+
+**Secondary button until WhatsApp is confirmed:** Call +971 2 626 8001
+
+**Build:** The primary button links to `/contact-us/` with nothing pre-filled. WhatsApp shows only once a number is confirmed (open fact 69); until then the Call button takes its place (decision 271).
 
 ## Sources (not for publishing)
 

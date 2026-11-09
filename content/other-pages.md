@@ -130,7 +130,9 @@ Your CV contains personal data. See our [Privacy Policy](/privacy-policy/) for h
 
 **Spam-trap field label (hidden from view and from screen readers):** Leave this field empty
 
-**Privacy note above the button:** We use these details to respond to your enquiry. See our [Privacy Policy](/privacy-policy/).
+**Consent checkbox above the button, not ticked by default:** I agree that Vanguard Technology may use these details to respond to my enquiry. See the [Privacy Policy](/privacy-policy/).
+
+**Consent error:** Tick the box to confirm that we may use your details.
 
 **Button:** Send enquiry
 
@@ -217,5 +219,17 @@ Your CV contains personal data. See our [Privacy Policy](/privacy-policy/) for h
 **Success:** Thank you. Check your email and confirm your subscription.
 
 **Sending failed:** We could not complete your sign-up. Try again later.
+
+**Confirmation email subject:** Confirm your newsletter subscription
+
+**Confirmation email text:** Select the button below to confirm that you want the Vanguard Technology newsletter. If you did not sign up, ignore this email.
+
+**Confirmation email button:** Confirm subscription
+
+**Confirmed page heading:** Your subscription is confirmed.
+
+**Expired link heading:** This link has expired.
+
+**Expired link text:** Sign up again from the footer of any page.
 
 **Notes:** Who writes the newsletter, what it covers and which tool sends it are unknown (open fact 64). Do not launch the form until these are settled.

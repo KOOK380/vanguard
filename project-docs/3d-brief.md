@@ -23,13 +23,13 @@ Details are in [image-credits.md](image-credits.md). No third-party credit is ow
 
 ## Results
 
-Files are in `assets-raw/models/`. Sizes are the final compressed files, and counts were read back from them.
+The site's files are `public/models/hero.glb` and `public/models/plant.glb`, and the stills are in `public/images/3d/`. Hotspot positions are in `src/content/plant-hotspots.json`. `assets-raw/models/` holds the same files. Sizes are the final compressed files, and counts were read back from them.
 
 | Measure | Hero | Limit | Plant | Limit |
 |---|---|---|---|---|
 | **File** | `hero.glb` | | `plant.glb` | |
 | **Size** | 168 KB | 3 MB (instruction); 300 KB (design system) | 179 KB | 5 MB (instruction); 700 KB (design system) |
-| **Triangles** | 27,006 | 30,000 on phones | 26,646 | 75,000 on phones |
+| **Triangles** | 27,006 | 60,000 | 26,646 | 150,000 |
 | **Meshes (draw calls before shadows)** | 26 | 40 | 35 | 100 |
 | **Textures** | None | 2048 px maximum | None | 2048 px maximum |
 | **Validator** | No errors or warnings | | No errors or warnings | |
@@ -108,7 +108,7 @@ const zone = scene.getObjectByName('zone-oil-gas');
 
 **Lighting:** soft shadows and contact shading are not in the files. The stills use many soft light samples, which a live page cannot. The viewer needs its own light setup, plus a baked ground shadow, and will not match the stills exactly until that is tuned.
 
-**Behaviour:** loading, fallback conditions, camera limits and pause rules are in [design-system.md](design-system.md). Start the viewer only after the page is usable, with the still as the Largest Contentful Paint element. Skip it with no WebGL, Save-Data, reduced motion or low power.
+**Behaviour:** loading, fallback conditions, camera limits and pause rules are in [design-system.md](design-system.md). Start the viewer only after the page is usable, with the still as the Largest Contentful Paint element. Skip it on mobile, on low-power devices, with reduced motion and with no WebGL (decision 226).
 
 ## How to rebuild
 
@@ -119,15 +119,15 @@ The source is in `design/source/`, and uses this machine's paths.
 3. `gltf-transform validate` checks them.
 4. `node make-models.js still 128` renders the stills from the compressed files.
 
-We did not use `gltf-transform optimize` (decision 216). The models have no textures, so nothing was resized.
+We did not use `gltf-transform optimize` (decision 216). The models have no textures, so nothing was resized. Uncompressed, the hero is 1,916 KB and the plant 1,897 KB.
 
 ## Not done yet
 
-- **Live viewer:** not built, so frame rate, memory use and real load time are unmeasured. Software rendering was used here, so none of this has run on a phone GPU.
+- **Live viewer:** not built, so frame rate, memory use and real load time are unmeasured. Software rendering was used here, so none of this has run on a real GPU.
 - **Selection state:** the dimmed and outlined selected state from the design system is not implemented. The group structure is ready for it.
 - **Close-up detail:** at 14 sides, the large round tanks show visible facets up close. This suits the low-poly style at planned sizes, but check it if the plant is shown larger.
 - **Solution page hero:** the mock-up still uses a separate higher-detail render (`sol-1100.webp`). Make it from `hero.glb` by showing the cabinet and desk groups, or export a third model.
-- **Icons:** the 3D icons are pre-rendered from the higher-detail scene code, and need no `.glb`.
+- **Icons:** the Home solution icons are nine low-poly models built in code (`src/components/three/IconModels.tsx`), drawn into one shared canvas with drei View, and need no `.glb` (decision 275). The pre-rendered icon images remain in `public/images/3d/icons/` for other pages.
 
 ## Acceptance checks for the build
 
@@ -135,6 +135,7 @@ We did not use `gltf-transform optimize` (decision 216). The models have no text
 - [ ] Every page reads and works with WebGL turned off.
 - [ ] Selecting a zone dims the others, adds the maroon outline and opens its HTML label.
 - [ ] The HTML hotspot list works by keyboard and screen reader, and drives the model.
-- [ ] 60 fps on desktop and 30 fps on a mid-range phone, on real devices.
+- [ ] 60 fps on a typical desktop, on real hardware.
+- [ ] Phones, touch devices, low-power devices and reduced motion download no WebGL code or model.
 - [ ] Rendering pauses off-screen, and falls back below 20 fps for 3 seconds.
 - [ ] The "Illustrative model" caption is visible wherever a model appears.

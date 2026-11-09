@@ -20,7 +20,7 @@ Written 2026-11-03. Based on [brief.md](brief.md), [research.md](research.md), [
 | Project Management | `/solutions/project-management/` | Under Solutions | F7, F20 |
 | Field Services & Annual Maintenance Contracts | `/solutions/field-services-maintenance/` | Under Solutions | F6, F7, F11, F20 |
 | PLC/SCADA Design & Validation | `/solutions/plc-scada-design-validation/` | Under Solutions | F3, F9, F23 |
-| IT Consultancy | `/solutions/it-consultancy/` | Under Solutions | F7, F27, F28 |
+| IT Consultancy | `/solutions/it-consultancy/` | Under Solutions | F7, F28, F29 |
 | Audio/Visual Integration | `/solutions/audio-visual-integration/` | Under Solutions | F26 |
 | **Industries overview** | `/industries/` | Yes | F4, F5 |
 | Oil & Gas | `/industries/oil-gas/` | Under Industries | F5 |
@@ -53,15 +53,15 @@ Section order tested in [design/wireframes.html](design/wireframes.html) at 1440
 |---|---|---|
 | **Home** | Hero with buttons; proof points and Our Partners; Our solutions; Industries we serve; From field instruments to SCADA; How we work, with a button; Why Vanguard; Capabilities; Tell us about your system | 3D hero; 3D icons on solution rows; photos on industry cards; 3D plant model |
 | **PLC/SCADA Design & Validation** | Hero with buttons and linked industries; What we deliver; From field instruments to SCADA; How we work; FAQs; Our Partners and Based in Abu Dhabi; closing band "Tell us which platform your site runs on", with Discuss your SCADA scope and Request company documents | Static 3D render in hero; 3D plant model |
-| **Other solution pages** | Hero with buttons and linked industries; What we deliver; How we work; FAQs; Our Partners and Based in Abu Dhabi; closing band "Tell us about your system" | 3D icon in hero |
-| **Field Services & Annual Maintenance Contracts** | As other solution pages, with the quote FAQ as a callout beside What we deliver, and a closing band "Tell us about your plant" | 3D icon in hero |
-| **Industry pages** | Hero with intro and buttons; Operator challenges; How Vanguard helps; See it on the model, with Typical systems we deliver; closing band with the page's primary button as H2 | 3D icon in hero; 3D plant model focused on the page's hotspot |
+| **Other solution pages** | Hero with buttons and linked industries; What we deliver; How we work; FAQs; Our Partners and Based in Abu Dhabi; closing band "Tell us about your system" | Static 3D render in hero |
+| **Field Services & Annual Maintenance Contracts** | As other solution pages, with the quote FAQ as a callout beside What we deliver, and a closing band "Tell us about your plant" | Static 3D render in hero |
+| **Industry pages** | Hero with intro and buttons; Operator challenges; How Vanguard helps; See it on the model, with Typical systems we deliver; closing band with the page's primary button as H2 | 3D plant model focused on the page's hotspot |
 | **Capabilities** | Hero with buttons; What we do; Our Partners; Company details beside Preparing a shortlist?; The types of work we deliver, as a single column of expanding profiles with the label always visible and the first open; Tell us about your system | None |
 | **Contact** | Hero; form in three groups, beside Contact details and What happens after your enquiry on desktop, and above them on phones | None |
 
 **Home card order:** System Integration, PLC/SCADA Design & Validation, Field Services & Annual Maintenance Contracts, Control & Instrumentation Engineering, Supply & Field Installation, Turnkey Projects, Project Management, IT Consultancy, Audio/Visual Integration. This follows the priority tiers in [keyword-plan.md](keyword-plan.md).
 
-**3D icons** are small pre-rendered images, not WebGL (decisions 191 and 203). The visual design of Home, PLC/SCADA and Contact is in [design/design-review.md](design/design-review.md).
+**3D icons** on Home are live low-poly models in one shared canvas on capable desktops, with matching SVG icons everywhere else (decision 275, replacing the pre-rendered images of decisions 191 and 203). **Live 3D** appears on capable desktops only, and everyone else sees the still image with the same links (decision 226). The visual design of Home, PLC/SCADA and Contact is in [design/design-review.md](design/design-review.md).
 
 ## User journeys
 

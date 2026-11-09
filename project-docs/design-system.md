@@ -2,6 +2,8 @@
 
 Written 2026-11-03 for Direction B, Clean engineering white ([visual-directions.md](visual-directions.md)). Budgets come from [brief.md](brief.md).
 
+**In code:** tokens are in `src/app/globals.css`, components in `src/components/ui/`, and every token and state is on `/styleguide/` (decisions 239 to 247).
+
 ## Colour
 
 ### Tokens
@@ -21,7 +23,7 @@ Written 2026-11-03 for Direction B, Clean engineering white ([visual-directions.
 | `color-maroon-700` | `#571926` | Primary buttons, links, icons, focus ring on light |
 | `color-maroon-100` | `#F6ECEA` | Secondary button hover, selected backgrounds |
 | `color-inverse-muted` | `#D9CCC6` | Secondary text on maroon |
-| `color-gold-500` | `#E19950` | Rules and highlights, 3D selection, focus ring on maroon, text on maroon only |
+| `color-gold-500` | `#E19950` | Rules and highlights, 3D selection, focus ring on maroon, text on maroon only. As a button fill on light, only for the header quote button, with a maroon-700 border (decision 249) |
 | `color-gold-300` | `#EDB98A` | Gold button hover |
 | `color-gold-100` | `#FBEEDF` | Gold badge background |
 | `color-gold-800` | `#8A5317` | Eyebrows and small gold-toned labels on light |
@@ -169,6 +171,8 @@ Base unit: 4 px. Use only these values.
 | Tablet | 768 to 1023 px | 8 | 24 px | 32 px |
 | Desktop | 1024 px and up | 12 | 24 px | 48 px, then centred |
 
+The header alone has a further breakpoint, `xl` at 1280 px, where the desktop menu replaces the phone menu (decision 250).
+
 The container has a maximum of **1280 px** for its 12 columns, which makes each column about 84.67 px at full width. Margins sit outside it. Full-width bands such as the footer can run edge to edge, with their content inside the container.
 
 - **Reading text:** 7 of 12 columns at most.
@@ -277,7 +281,7 @@ If a tag becomes interactive, build it as a small button with all button states.
 - **Grid and stroke:** 24 px grid, 1.5 px stroke, square ends, no fill. Stroke scales with `vector-effect` so it stays even.
 - **Sizes:** 16, 20, 24 and 32 px.
 - **Format:** inline SVG with `currentColor`.
-- **3D icons:** solution rows on Home use small pre-rendered images in the matte 3D style, at 64 px or less, 8 KB or less each, lazy-loaded below the first screen. They are not WebGL, and they always have a text label (decisions 191 and 203). Line icons remain for interface controls.
+- **3D icons:** solution rows on Home show a 64 px tile in stone-100 with a 1.5 px maroon-700 line icon (SVG). On capable desktops, after the page is usable, low-poly matte models replace them in one shared canvas (drei View): darkest structure colour with mid-tone and maroon details, thin gold-500 edge lines. Hovering or focusing a row turns the model once over 800 ms; nothing else moves, and the canvas draws only then (decision 275). solution rows on Home use small pre-rendered images in the matte 3D style, at 64 px or less, 8 KB or less each, lazy-loaded below the first screen. They are not WebGL, and they always have a text label (decisions 191 and 203). Line icons remain for interface controls.
 - **Labels:** icons accompany text. Decorative icons take `aria-hidden="true"`, and icon-only buttons have an `aria-label`.
 - **Starter set:** phone, mail, location, arrow, chevron, menu, close, check, error, external link, plus simple symbols for each solution and industry.
 - **No logos or vendor symbols** in the icon set.
@@ -306,7 +310,7 @@ Sources and replacement priorities are in [image-credits.md](image-credits.md) a
 
 ### Logo
 
-The header and footer use a horizontal lockup, `design/assets/logos/vanguard-lockup.svg`, built from the shapes in the redrawn logo, so that the name stays legible at 40 to 52 px high (decision 201). It needs company approval (open fact 66).
+The header and footer use a horizontal lockup, `public/logos/vanguard-lockup.svg`, built from the shapes in the redrawn logo, so that the name stays legible at 40 to 52 px high (decision 201). It needs company approval (open fact 66).
 
 ## Motion
 
@@ -334,7 +338,7 @@ Motion explains a change. It never decorates or delays.
 | Hover and focus | Colour changes stay; movement is removed |
 | Menus and messages | Appear instantly, or with a fade under 100 ms |
 | 3D hero | Shows the static image; the 3D doesn't start |
-| Plant model | Loads only if the visitor chooses to. Camera jumps between views, with no auto-rotation |
+| Plant model | Shows the still image and HTML list; the 3D doesn't start (decision 226) |
 | Smooth scrolling | Off |
 
 ## 3D style
@@ -367,7 +371,7 @@ These rules apply to the hero and the plant model. The models are specified in [
 
 - One soft hemisphere light plus one warm directional key light from the upper left, at about 45°.
 - Soft shadows baked as ambient occlusion and a contact shadow on the ground.
-- No real-time shadows on mobile; at most one 1024 px shadow map on desktop.
+- At most one 1024 px shadow map, on desktop only.
 - Tone mapping must keep maroon and gold close to their brand values, checked side by side.
 
 ### Camera
@@ -375,9 +379,10 @@ These rules apply to the hero and the plant model. The models are specified in [
 - Perspective camera with a 30° field of view, for a calm, model-like view.
 - Default view: three-quarter, from about 30° above.
 - Plant model limits: horizontal orbit up to ±60°, vertical 15° to 60°, limited zoom, no panning.
-- Hero: drift of up to ±3° on pointer movement, with no drag.
-- Page scrolling always wins. The canvas never traps the scroll wheel or touch; on touch, rotation requires an explicit "Explore" control.
-- Camera moves between systems take 800 ms at most, and jump straight there under reduced motion.
+- Home hero background: a static gold-500 line and point network, lines at 14% and points at 30% opacity, masked away from the text (decision 268).
+- Hero: one slow turn every 40 seconds, with a visible pause button, and a damped tilt of up to 8° towards the pointer, with no drag (decision 265). The canvas reaches 10% past the still on every side, with a 35.6° field of view, so that its framing matches the still's 30° camera while the corners have room to turn.
+- Page scrolling always wins. The canvas never traps the scroll wheel. Touch devices see the still image, so they need no rotation control (decision 226).
+- Camera moves between systems take 800 ms at most.
 
 ### Labels and controls
 
@@ -403,16 +408,15 @@ The whole 3D package is limited to the brief's **1.5 MB compressed**.
 | Measure | Hero | Plant model |
 |---|---|---|
 | Triangles, desktop | 60,000 | 150,000 |
-| Triangles, mobile | 30,000 | 75,000 |
 | Draw calls | 40 | 100 |
 | Largest texture | 1024 px, KTX2 | 1024 px, KTX2 |
-| Frame rate target | 60 fps desktop, 30 fps mobile | 60 fps desktop, 30 fps mobile |
+| Frame rate target | 60 fps | 60 fps |
 
 - **Format:** glTF binary with Meshopt or Draco compression.
 - **Fallback image:** AVIF or WebP, 80 KB or less at phone size, and 150 KB or less at desktop size. It is the Largest Contentful Paint element and counts toward the 300 KB page budget, so it needs explicit dimensions.
 - **Budget check:** at their limits, fonts and the desktop image use 230 of the 300 KB page budget, leaving 70 KB for HTML, CSS and JavaScript. Aim below both limits, and measure during the build.
-- **Loading:** the 3D starts only after the page is usable. The plant model loads when it nears the viewport, on capable devices.
-- **Skips 3D:** no WebGL, Save-Data on, reduced motion, or low-power devices. These visitors see the fallback.
-- **Pixel ratio:** capped at 2 on desktop and 1.5 on mobile.
+- **Loading:** the 3D starts only after the page is usable. The plant model loads when it nears the viewport.
+- **Skips 3D, with no WebGL download:** mobile (under 768 px, or a coarse pointer), low-power devices (Save-Data, 4 or fewer CPU cores, or 4 GB or less of memory), reduced motion and no WebGL. These visitors see the still image (decision 226).
+- **Pixel ratio:** capped at 2. The hero caps it at 1.5 (decision 265).
 - **While running:** rendering pauses off-screen or in a hidden tab, and falls back to the image if frame rate stays under 20 fps for 3 seconds.
 - **Layout:** the canvas has a reserved size, so loading causes no layout shift.

@@ -6,24 +6,41 @@ Written for the merged file, because the sitemap needs these and no copy existed
 
 ## Header
 
-**Logo:** Vanguard Technology, linked to the home page
+**Logo:** Vanguard Technology
 
-**Main menu:** About | Solutions | Industries | Capabilities
+**Main menu:** Home | About | Solutions | Industries | Capabilities | Our Group | Contact
+
+**Solutions menu link:** View all solutions
+
+**Industries menu link:** View all industries
 
 **Phone link:** +971 2 626 8001
 
-**Button:** Start a consultation. Hidden on the Contact page, whose H1 is the same.
+**Button:** Request a quote
+
+**Main menu name:** Main
+
+**Phone menu button name:** Menu
+
+**Close menu button name:** Close menu
+
+**Phone action bar name:** Quick contact
+
+**Skip link:** Skip to content
+
+**Breadcrumb name:** Breadcrumb
+
+**Build:** The logo links to the home page. The main menu follows decision 248. Solutions and Industries open a panel with their pages, by page name, and the menu link to `/solutions/` or `/industries/`. The button links to `/contact-us/` with nothing pre-filled, and is hidden on the Contact page (decision 249). The four names are accessible names (decision 252). The skip link is the first item on every page (decision 245). The breadcrumb name labels the breadcrumb at the top of every page except Home; its items are the menu names, then the page's own name (decision 277). Transparent at the top of the page, and solid (paper with the header shadow) after 50 px of scroll. Desktop menu from 1280 px; the phone menu below that (decision 250).
 
 ## Phone action bar
 
-**Build:** Fixed to the bottom of the screen under 768 px, on every page. It replaces the header button on phones, and must not cover content or the cookie banner.
+**Build:** Fixed to the bottom of the screen under 768 px, on every page. It replaces the header button on phones, and must not cover content or the cookie banner. Call links to `tel:+97126268001`. WhatsApp shows only once a WhatsApp number is confirmed (open fact 69); until then the bar shows Call and Get a quote. Get a quote links to `/contact-us/` with nothing pre-filled. On the Contact page it is replaced by Email us (`mailto:info@vanguardgcc.com`), styled as a secondary button so that the form stays the main action (decision 251).
 
-| Page | Left button | Right button |
-|---|---|---|
-| All pages, unless listed | Call | Start a consultation |
-| Solution and industry pages | Call | The page's primary button |
-| Capabilities | Call | Request company documents |
-| Contact | Call | Email us, styled as a secondary button so that the form stays the main action |
+**Buttons:** Call | WhatsApp | Get a quote
+
+**Contact page button:** Email us
+
+**WhatsApp pre-filled message:** Hello Vanguard, I'd like to discuss a project.
 
 ## Footer
 
@@ -39,7 +56,11 @@ Written for the merged file, because the sitemap needs these and no copy existed
 
 **Copyright:** © [current year] Vanguard Technology. All rights reserved.
 
+**Newsletter:** The newsletter sign-up sits in the footer, between the link columns and the legal row (see Newsletter sign-up).
+
 **Notes:** Open fact 43 sets the current year only. No social icons, because no account is known (open fact 28).
+
+> **Build note:** Maroon-900, as in the approved design (decision 254). On phones, the Solutions and Industries columns are left out, and the Company list adds "Solutions" and "Industries" links to the overview pages. Social links appear only once real profile URLs are added to `src/content/site.ts` (decision 257). "Cookie settings" is added with the cookie banner, because until then it has nothing to open (decision 258).
 
 ---
 

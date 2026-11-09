@@ -44,6 +44,8 @@ Ask us for the company documents your prequalification process needs.
 
 **Call to action:** Discuss your integration scope (pre-filled) | View capabilities
 
+**Closing band H2:** Tell us about your system
+
 **Notes:** F2, F3, F4, F5, F6, F7, F9, F29.
 
 ---
@@ -85,6 +87,8 @@ Yes. We work on HVAC control systems and integrated building and energy manageme
 See "Industry standards for this work" on our About page, and ask us which apply. We do not claim certification against them.
 
 **Call to action:** Discuss your engineering scope (pre-filled) | See PLC and SCADA design
+
+**Closing band H2:** Tell us about your system
 
 **Notes:** F4, F5, F6, F8. The site lists safety instrumented systems with no detail (open fact 59).
 
@@ -128,6 +132,8 @@ We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Call to action:** Request a supply or installation quote (pre-filled) | See turnkey projects
 
+**Closing band H2:** Tell us about your system
+
 **Notes:** F4, F5, F7, F10, F21, decision 82. "Distribution boards" spells out the site's "DB". No brands are named (open fact 17).
 
 ---
@@ -169,6 +175,8 @@ Tell us the part you need. We will confirm what we can take on.
 Send us your specification, drawings, site location and programme.
 
 **Call to action:** Discuss your project (pre-filled) | See project management
+
+**Closing band H2:** Tell us about your system
 
 **Notes:** F2, F4, F5, F6, F7, F8, F10, F29. Commissioning is left out (open fact 55).
 
@@ -212,6 +220,8 @@ Send your scope, programme, site location and contract arrangements.
 
 **Call to action:** Discuss your project (pre-filled) | See turnkey projects
 
+**Closing band H2:** Tell us about your system
+
 **Notes:** F4, F5, F7, F20. The site names project management with no detail, so the page stays with its listed support items.
 
 ---
@@ -253,6 +263,8 @@ We offer 24/7 support. Ask us what coverage your contract would include.
 Send us the site location, control system in use, your current support arrangement and the support you need.
 
 **Call to action:** Ask about a maintenance contract (pre-filled) | Call us
+
+**Closing band H2:** Tell us about your plant
 
 **Notes:** F4, F5, F6, F7, F11, F20. No terms are added to 24/7 support (open fact 19).
 
@@ -296,6 +308,8 @@ See "Industry standards for this work" on our About page, and ask us which apply
 
 **Call to action:** Discuss your SCADA scope (pre-filled) | See oil and gas
 
+**Closing band H2:** Tell us which platform your site runs on
+
 **Notes:** F3, F4, F5, F6, F9, F23. No platforms are named (open fact 17). Standards: open fact 16.
 
 ---
@@ -338,6 +352,8 @@ Start with a free consultation. Share your organisation, systems and goals.
 
 **Call to action:** Discuss your IT requirements (pre-filled) | About Vanguard Technology
 
+**Closing band H2:** Tell us about your system
+
 **Notes:** F5, F7, F11, F22, F28, F29. Archived services are left out because they may no longer be offered (F27, open fact 57).
 
 ---
@@ -379,5 +395,7 @@ Tell us your requirements or specification. We will confirm what we can provide.
 We are based in Abu Dhabi and serve the UAE, including Dubai.
 
 **Call to action:** Discuss your AV project (pre-filled) | About Vanguard Technology
+
+**Closing band H2:** Tell us about your system
 
 **Notes:** F21, F26, decision 82. No brands are named (open fact 17).

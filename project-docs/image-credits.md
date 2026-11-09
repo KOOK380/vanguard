@@ -154,6 +154,47 @@ Searched 2026-11-04. Nothing below was downloaded for use, so no credit is owed.
 
 These licences and triangle counts come from the Sketchfab and Poly Haven listings. Sketchfab models were judged from listings only, and were not opened in a viewer.
 
+## Site files in `public/`
+
+Optimised 2026-11-05 from `assets-raw/`, which keeps the originals. Photo credits above still apply, under the original file names.
+
+**Status:** "In design" photos are used in the signed-off mock-ups. "Available" photos passed a visual check at reduced size. **"Hold" photos must not appear on the site** until the reason is cleared. Before launch, delete from `public/images/` any photo the site does not use, because everything in `public/` can be fetched by URL.
+
+Files over 120 KB must be served through `next/image` at the sizes each layout needs, so that delivery stays within the 120 KB limit.
+
+| File (`public/images/`) | Before | After | Size | Status |
+|---|---|---|---|---|
+| `abu-dhabi-skyline-towers.webp` | 499 KB | 210 KB | 2000x1350 | Available |
+| `abu-dhabi-skyline-waterfront.webp` | 338 KB | 121 KB | 2000x1333 | In design |
+| `switchgear-panel-room.webp` | 725 KB | 249 KB | 2000x2667 | Available |
+| `electrician-in-protective-equipment.webp` | 488 KB | 96 KB | 2000x1335 | Hold: identifiable person |
+| `control-room-wall-panels-desk.webp` | 597 KB | 143 KB | 2000x1333 | Available |
+| `cooling-units-outdoor-rows.webp` | 735 KB | 220 KB | 1548x1032 | Cropped; In design |
+| `rooftop-cooling-fans.webp` | 743 KB | 279 KB | 2000x1333 | Available |
+| `process-plant-stacks.webp` | 531 KB | 239 KB | 2000x1331 | Available |
+| `tunnel-construction-truck.webp` | 909 KB | 373 KB | 2000x1378 | Available |
+| `refinery-columns-pipework.webp` | 492 KB | 186 KB | 2000x1250 | In design |
+| `power-plant-striped-stacks.webp` | 855 KB | 265 KB | 2000x1691 | In design |
+| `power-transformer-yard.webp` | 718 KB | 237 KB | 2000x1500 | Available |
+| `wastewater-treatment-tanks-aerial.webp` | 919 KB | 429 KB | 2000x1500 | In design |
+| `black-sedan-roadside.webp` | 828 KB | 333 KB | 2000x1333 | Hold: recognisable car brand |
+| `hotel-lobby-seating.webp` | 592 KB | 156 KB | 2000x1333 | Available |
+| `city-towers-blue-sky.webp` | 504 KB | 150 KB | 2000x1333 | Hold: recognisable buildings |
+| `harbour-cranes-dusk.webp` | 383 KB | 82 KB | 2000x1333 | Available |
+| `rooftop-air-conditioning-units.webp` | 1129 KB | 194 KB | 1455x970 | Cropped; In design |
+| `pump-motors-pipework.webp` | 406 KB | 114 KB | 2000x1333 | Available |
+| `engineering-team-protective-equipment.webp` | 631 KB | 232 KB | 2000x1334 | Hold: identifiable people |
+| `cable-trays-ceiling.webp` | 570 KB | 118 KB | 2000x1500 | Available |
+| `electrical-panel-testing.webp` | 413 KB | 115 KB | 2000x1500 | In design |
+| `electric-motor-service.webp` | 461 KB | 62 KB | 1412x941 | Cropped; Available |
+| `control-cabinet-modules-wiring.webp` | 724 KB | 264 KB | 2000x1333 | Hold: recognisable vendor hardware |
+| `control-panel-push-buttons.webp` | 222 KB | 52 KB | 1600x1067 | Cropped; In design |
+| `control-room-consoles.webp` | 514 KB | 139 KB | 2000x1500 | Hold: appears to be a ship |
+| `process-pipework-black-white.webp` | 765 KB | 156 KB | 1582x1230 | Cropped; In design |
+| `open-control-cabinet-modules.webp` | 651 KB | 230 KB | 2000x1333 | Hold: recognisable vendor hardware |
+
+**Crops:** the five cropped photos remove lettering, a brand mark and signage, a motor nameplate, a barcode label, and a tag and meter.
+
 ## Vanguard logo
 
 | File (`assets-raw/logo/`) | Source | Status |
@@ -182,3 +223,20 @@ These aren't free-licence images. They are other organisations' trademarks, copi
 **Left out on purpose**
 - **ADAC:** the German automobile club's logo, shown on the current site in error (decisions 43 and 113).
 - **Larsen & Toubro:** in the old media library, but never displayed on the site (decision 45).
+
+## Site copies for Home (decision 273)
+
+Copied from `design/assets/photos/` and `design/assets/renders/`, the approved crops of the "In design" photos above.
+
+| File in `public/images/home/` | From | Size |
+|---|---|---|
+| `refinery-columns-pipework-840.webp`, `-420.webp` | `refinery-columns-pipework.webp` | 46 KB, 14 KB |
+| `wastewater-treatment-tanks-aerial-840.webp`, `-420.webp` | `wastewater-treatment-tanks-aerial.webp` | 77 KB, 21 KB |
+| `cooling-units-outdoor-rows-840.webp`, `-420.webp` | `cooling-units-outdoor-rows.webp` | 83 KB, 23 KB |
+| `power-plant-striped-stacks-840.webp`, `-420.webp` | `power-plant-striped-stacks.webp` | 37 KB, 11 KB |
+| `rooftop-air-conditioning-units-840.webp`, `-420.webp` | `rooftop-air-conditioning-units.webp` | 80 KB, 22 KB |
+| `control-panel-push-buttons-840.webp`, `-420.webp` | `control-panel-push-buttons.webp` | 23 KB, 10 KB |
+| `process-pipework-black-white-900.webp` | `process-pipework-black-white.webp` | 68 KB |
+
+The nine solution icons are in `public/images/3d/icons/`, 128 px, 3 to 6 KB each. They are renders of the procedural models, with no third-party content.
+

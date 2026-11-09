@@ -1,0 +1,44 @@
+[
+ {
+  "name": "hotspot-oil-gas",
+  "label": "Oil & Gas",
+  "page": "/industries/oil-gas/",
+  "x": 41.4,
+  "y": 11.1
+ },
+ {
+  "name": "hotspot-water-treatment",
+  "label": "Water & Wastewater",
+  "page": "/industries/water-wastewater/",
+  "x": 31,
+  "y": 42.5
+ },
+ {
+  "name": "hotspot-district-cooling",
+  "label": "District Cooling",
+  "page": "/industries/district-cooling/",
+  "x": 75.6,
+  "y": 30.9
+ },
+ {
+  "name": "hotspot-substation",
+  "label": "Power & Infrastructure",
+  "page": "/industries/power-infrastructure/",
+  "x": 75.4,
+  "y": 55
+ },
+ {
+  "name": "hotspot-office-bms",
+  "label": "HVAC & Building Management Systems",
+  "page": "/industries/hvac-building-management-systems/",
+  "x": 57,
+  "y": 36.3
+ },
+ {
+  "name": "hotspot-safety-valves",
+  "label": "Safety Instrumented Systems",
+  "page": "/industries/safety-instrumented-systems/",
+  "x": 43.3,
+  "y": 57
+ }
+]

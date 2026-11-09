@@ -21,6 +21,8 @@ F, G and S source IDs are in [research.md](../project-docs/research.md).
 
 **Intro:** SCADA, communications and control systems, with instrumentation and field installation.
 
+**Photo alt text:** Refinery columns and process pipework
+
 **Operator challenges**
 1. **Dispersed field sites.** Field sites can cover large areas and rely on a mix of wired, cellular, satellite and radio links.
 2. **Mixed equipment.** Legacy equipment and devices from different manufacturers can make integration difficult.
@@ -59,6 +61,8 @@ F, G and S source IDs are in [research.md](../project-docs/research.md).
 **H1:** Automation and control for water and wastewater
 
 **Intro:** SCADA and control systems, with PLC programs and maintenance.
+
+**Photo alt text:** Aerial view of round and rectangular treatment tanks
 
 **Operator challenges**
 1. **Lost site data.** Remote pumping sites can lose readings when a cellular or radio link fails, unless data is stored locally.
@@ -99,6 +103,8 @@ F, G and S source IDs are in [research.md](../project-docs/research.md).
 
 **Intro:** Control systems and SCADA for plants, with retrofit and annual maintenance contracts.
 
+**Photo alt text:** Rows of large outdoor cooling units
+
 **Operator challenges**
 1. **Low delta-T.** Many district cooling systems see low return temperatures, which raises water flow and congests the network.
 2. **Chiller demand.** Low delta-T can mean more chiller operation and less use of free cooling.
@@ -138,6 +144,8 @@ F, G and S source IDs are in [research.md](../project-docs/research.md).
 
 **Intro:** SCADA and control systems, electrical installation and project management.
 
+**Photo alt text:** Industrial plant with tall striped stacks
+
 **Operator challenges**
 1. **Ageing control systems.** Spare parts and people who know older control systems become harder to find.
 2. **Connections to older systems.** Linking auxiliary systems such as water treatment and emissions monitoring to an old control system can be difficult.
@@ -176,6 +184,8 @@ F, G and S source IDs are in [research.md](../project-docs/research.md).
 
 **Intro:** HVAC control and integrated building and energy management systems.
 
+**Photo alt text:** Rooftop air conditioning units in rows
+
 **Operator challenges**
 1. **Sensor drift.** Temperature, pressure and CO2 readings can lose accuracy, so controls respond to bad information.
 2. **Forgotten overrides.** A set point changed to resolve a complaint may never be reset.
@@ -213,6 +223,8 @@ F, G and S source IDs are in [research.md](../project-docs/research.md).
 **H1:** Safety instrumented systems
 
 **Intro:** Our control, electrical and instrumentation engineers work on these systems.
+
+**Photo alt text:** Control panel with coloured push buttons
 
 **Operator challenges**
 1. **Bypass control.** Trip bypasses without time limits or authorisation records can outlast the shift they were meant for.
